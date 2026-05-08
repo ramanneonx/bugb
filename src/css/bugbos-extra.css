@@ -1,0 +1,300 @@
+/* ══════════════════════════════════════════
+   bugbOS Analytics CSS — Chart Components
+   ══════════════════════════════════════════ */
+
+/* ── Bar Chart Row ─────────────────────── */
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+.bar-row:last-child { border-bottom: none; }
+
+.bar-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+  font-size: 0.8rem;
+}
+
+.bar-track {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bar-value {
+  min-width: 30px;
+  text-align: right;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── Timeline Chart ────────────────────── */
+.timeline-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  height: 140px;
+  padding: 10px 0;
+  overflow-x: auto;
+}
+
+.timeline-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 60px;
+}
+
+.timeline-bar {
+  width: 32px;
+  background: linear-gradient(to top, var(--acid), var(--cyan));
+  border-radius: 4px 4px 0 0;
+  box-shadow: 0 0 15px rgba(0,255,159,0.3);
+  transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 4px;
+}
+
+.timeline-amount {
+  font-size: 0.65rem;
+  color: var(--acid);
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.timeline-label {
+  font-size: 0.65rem;
+  color: var(--text-tertiary);
+  font-family: 'Urbanist', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+/* ── Metric Block ──────────────────────── */
+.metric-block {
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 16px;
+  text-align: center;
+}
+
+.metric-val {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+
+.metric-val.acid { color: var(--acid); text-shadow: 0 0 20px var(--acid-glow); }
+.metric-val.amber { color: var(--amber); }
+.metric-val.cyan { color: var(--cyan); }
+.metric-val.red { color: var(--red); }
+
+.metric-label {
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  font-family: 'Urbanist', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ── Search Results ────────────────────── */
+.search-results {
+  max-height: 400px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.result-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all var(--transition);
+}
+
+.result-item:hover {
+  border-color: var(--acid);
+  background: rgba(0,255,159,0.04);
+}
+
+.result-type {
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  font-family: 'Urbanist', sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ── Modal Wide ────────────────────────── */
+.modal-wide {
+  max-width: 600px;
+  width: 95vw;
+}
+
+/* ── Checklist Items ───────────────────── */
+.checklist-items {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.checklist-items li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.checklist-items li.done {
+  text-decoration: line-through;
+  color: var(--text-tertiary);
+}
+
+.checklist-items input[type="checkbox"] {
+  accent-color: var(--acid);
+  width: 14px;
+  height: 14px;
+}
+
+/* ── Add Item Form ─────────────────────── */
+.add-item-form {
+  display: flex;
+  gap: 8px;
+}
+
+/* ── Tools Form ────────────────────────── */
+.tools-form {
+  display: grid;
+  grid-template-columns: 1fr 2fr auto;
+  gap: 10px;
+  margin-bottom: 15px;
+  align-items: start;
+}
+
+.tools-panel {
+  grid-column: 1 / -1;
+}
+
+/* ── Target Dashboard Grid ─────────────── */
+.target-dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.target-dashboard-grid .full-width {
+  grid-column: 1 / -1;
+}
+
+/* ── Anim Item ─────────────────────────── */
+.anim-item {
+  padding: 8px 12px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  font-size: 0.82rem;
+  transition: all var(--transition);
+}
+
+.anim-item:hover { border-color: var(--cyan); }
+.anim-item.active { border-color: var(--acid); background: rgba(0,255,159,0.05); color: var(--acid); font-weight: 700; }
+
+/* ── Phase Block ───────────────────────── */
+.phase-block {
+  margin-bottom: 20px;
+}
+
+.phase-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.phase-body {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+}
+
+.phase-item {
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 12px;
+  transition: border-color var(--transition);
+}
+
+.phase-item:hover { border-color: var(--cyan); }
+
+.phase-item-title {
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+}
+
+.phase-item-body {
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
+  white-space: pre-line;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── Tool Card ─────────────────────────── */
+.tool-card {
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 15px;
+  transition: border-color var(--transition);
+}
+
+.tool-card:hover { border-color: var(--acid); }
+.tool-name { font-weight: 800; margin-bottom: 4px; color: var(--acid); }
+.tool-desc { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 8px; }
+.tool-cmd { font-size: 0.72rem; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 4px; white-space: pre-line; }
+
+/* ── Case Card ─────────────────────────── */
+.case-card {
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 15px;
+}
+
+.case-title { font-weight: 800; margin-bottom: 5px; }
+.case-target { font-size: 0.75rem; color: var(--text-tertiary); margin-bottom: 10px; font-family: 'Urbanist', sans-serif; }
+.case-steps { font-size: 0.8rem; color: var(--text-secondary); }

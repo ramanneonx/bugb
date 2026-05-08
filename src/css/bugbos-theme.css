@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Urbanist:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+:root {
+  /* === BACKGROUNDS === */
+  --bg-void:      #05050d;
+  --bg-base:      #080812;
+  --bg-surface:   #0e0e1a;
+  --bg-elevated:  #12121f;
+  --bg-overlay:   rgba(18,18,31,0.95);
+  --bg-glass:     rgba(255,255,255,0.03);
+  --bg-glass-md:  rgba(255,255,255,0.06);
+
+  /* === ACCENTS === */
+  --acid:         #00ff9f;
+  --acid-dim:     rgba(0,255,159,0.12);
+  --acid-glow:    rgba(0,255,159,0.35);
+  --purple:       #9b59b6;
+  --purple-dim:   rgba(155,89,182,0.12);
+  --purple-glow:  rgba(155,89,182,0.4);
+  --cyan:         #00e5ff;
+  --cyan-dim:     rgba(0,229,255,0.1);
+  --cyan-glow:    rgba(0,229,255,0.35);
+  --amber:        #ffab00;
+  --amber-dim:    rgba(255,171,0,0.12);
+  --red:          #ff2d55;
+  --red-dim:      rgba(255,45,85,0.12);
+  --green:        #00e676;
+  --green-dim:    rgba(0,230,118,0.12);
+  --blue:         #2979ff;
+  --blue-dim:     rgba(41,121,255,0.12);
+  --orange:       #ff6d00;
+  --pink:         #f50057;
+
+  /* === SEVERITY === */
+  --sev-critical: #ff2d55;
+  --sev-high:     #ff6d00;
+  --sev-medium:   #ffab00;
+  --sev-low:      #00e5ff;
+  --sev-info:     #9b59b6;
+
+  /* === TEXT === */
+  --text-primary:   #f2f2ff;
+  --text-secondary: #8888aa;
+  --text-tertiary:  #44445a;
+  --text-accent:    #c8a0ff;
+  --text-acid:      #00ff9f;
+  --text-code:      #c8c8e8;
+
+  /* === BORDERS === */
+  --border:       rgba(255,255,255,0.07);
+  --border-md:    rgba(255,255,255,0.12);
+  --border-acid:  rgba(0,255,159,0.3);
+  --border-focus: rgba(155,89,182,0.5);
+
+  /* === SHADOWS === */
+  --shadow-xs:    0 2px 6px rgba(0,0,0,0.4);
+  --shadow-sm:    0 4px 14px rgba(0,0,0,0.5);
+  --shadow-md:    0 8px 30px rgba(0,0,0,0.6);
+  --shadow-lg:    0 16px 50px rgba(0,0,0,0.7);
+  --shadow-acid:  0 0 20px var(--acid-glow);
+  --shadow-purple:0 0 20px var(--purple-glow);
+
+  /* === RADII === */
+  --r-xs: 4px;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 24px;
+
+  /* === FONTS === */
+  --font-ui:      'Plus Jakarta Sans', 'Urbanist', sans-serif;
+  --font-display: 'Syne', 'Urbanist', sans-serif;
+  --font-alt:     'Urbanist', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+
+  /* === LAYOUT === */
+  --sidebar-w: 240px;
+  --topbar-h:  52px;
+  --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* === RESETS === */
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html,body { height: 100%; overflow: hidden; }
+
+body {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background: var(--bg-void);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.18); }
+
+/* === UTILS === */
+.hidden  { display: none !important; }
+.mono    { font-family: var(--font-mono); }
+.muted   { color: var(--text-secondary); }
+.small   { font-size: 0.82rem; }
+.acid    { color: var(--acid); }
+.cyber   { color: var(--cyan); }
+
+/* === ANIMATIONS === */
+@keyframes fadeUp   { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeIn   { from { opacity:0; } to { opacity:1; } }
+@keyframes spin     { to { transform: rotate(360deg); } }
+@keyframes pulse    { 0%,100%{opacity:1} 50%{opacity:0.5} }
+@keyframes glow     { 0%,100%{box-shadow:0 0 8px var(--acid-glow)} 50%{box-shadow:0 0 25px var(--acid-glow),0 0 50px rgba(0,255,159,0.1)} }
+@keyframes float    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+@keyframes scanline { 0%{transform:translateY(-100%)} 100%{transform:translateY(100vh)} }
+@keyframes slideIn  { from{transform:translateX(-20px);opacity:0} to{transform:translateX(0);opacity:1} }
+@keyframes popIn    { from{transform:scale(0.9);opacity:0} to{transform:scale(1);opacity:1} }
+@keyframes dash     { to{stroke-dashoffset:0} }
+@keyframes countUp  { from{transform:translateY(10px);opacity:0} to{transform:translateY(0);opacity:1} }
+@keyframes borderFlow {
+  0%   { border-color: var(--acid); box-shadow: 0 0 8px var(--acid-glow); }
+  33%  { border-color: var(--cyan); box-shadow: 0 0 8px var(--cyan-glow); }
+  66%  { border-color: var(--purple); box-shadow: 0 0 8px var(--purple-glow); }
+  100% { border-color: var(--acid); box-shadow: 0 0 8px var(--acid-glow); }
+}

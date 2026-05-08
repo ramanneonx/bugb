@@ -1,0 +1,56 @@
+.anim-layout { display: flex; gap: 24px; height: calc(100vh - 200px); }
+.anim-sidebar { width: 250px; flex-shrink: 0; overflow-y: auto; }
+.anim-list { display: flex; flex-direction: column; gap: 8px; }
+.anim-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text); padding: 12px 16px; border-radius: 8px; cursor: pointer; text-align: left; transition: all 0.2s; font-family: var(--font); }
+.anim-btn:hover { background: rgba(255,255,255,0.1); }
+.anim-btn.active { background: rgba(155,89,182,0.15); border-color: var(--accent); color: #fff; }
+
+.anim-main { flex: 1; display: flex; flex-direction: column; gap: 24px; overflow-y: auto; }
+.anim-stage { min-height: 450px; display: flex; flex-direction: column; position: relative; overflow: hidden; background: #0c0c14; border: 1px solid var(--border); border-radius: var(--r); }
+.anim-notes { flex: 1; }
+
+.stage-header { padding: 16px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.4); display: flex; justify-content: space-between; align-items: center; }
+.stage-title { font-weight: 700; font-size: 1.1rem; color: var(--cyan); }
+.stage-desc { font-size: 0.8rem; color: var(--text2); margin-top: 4px; }
+.stage-controls button { background: var(--accent); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-family: var(--font); font-weight: bold; transition: opacity 0.2s; }
+.stage-controls button:hover { opacity: 0.8; }
+
+.stage-content { flex: 1; display: flex; padding: 20px; gap: 20px; position: relative; align-items: stretch; }
+
+.arch-pane { flex: 1; border: 1px dashed rgba(255,255,255,0.1); border-radius: 8px; padding: 20px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.2); }
+.arch-label { position: absolute; top: 12px; left: 16px; font-size: 0.75rem; color: var(--text3); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+
+.actor { font-size: 3rem; margin-bottom: 15px; z-index: 2; position: relative; text-align: center; }
+.actor-label { font-size: 0.8rem; color: var(--text2); font-weight: 600; }
+
+.browser-window { width: 100%; height: 120px; background: #f0f0f0; border-radius: 6px; border: 1px solid #ccc; position: relative; margin-top: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+.browser-bar { background: #ddd; height: 20px; border-bottom: 1px solid #ccc; display: flex; align-items: center; padding-left: 8px; gap: 4px; }
+.browser-dot { width: 8px; height: 8px; border-radius: 50%; background: #ff5f56; }
+.browser-dot:nth-child(2) { background: #ffbd2e; }
+.browser-dot:nth-child(3) { background: #27c93f; }
+.browser-content { padding: 15px; color: #333; font-size: 0.85rem; font-family: Arial, sans-serif; }
+.browser-input { border: 1px solid #ccc; padding: 4px; width: 100%; margin-bottom: 10px; border-radius: 3px; }
+
+.server-box { width: 110px; height: 140px; background: linear-gradient(180deg, #2a2a35 0%, #1a1a2e 100%); border-radius: 8px; border: 2px solid var(--cyan); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; z-index: 2; box-shadow: 0 0 20px rgba(0,229,255,0.1); }
+.server-light { width: 12px; height: 12px; border-radius: 50%; background: var(--green); margin-bottom: 15px; box-shadow: 0 0 10px var(--green); animation: pulseLight 2s infinite; }
+.server-label { font-weight: 700; color: #fff; font-size: 0.9rem; margin-bottom: 5px; }
+
+.db-box { width: 90px; height: 110px; background: linear-gradient(180deg, #332211 0%, #1a0a00 100%); border: 2px solid var(--amber); border-radius: 50% / 15%; position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; color: var(--amber); font-weight: bold; box-shadow: 0 0 20px rgba(255,171,0,0.1); }
+
+.code-box { background: #1e1e24; border-radius: 6px; padding: 12px; font-family: var(--mono); font-size: 0.75rem; color: #a9b7c6; width: 100%; margin-top: auto; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto; white-space: pre; }
+.code-highlight { color: #ff5555; font-weight: bold; background: rgba(255,85,85,0.1); padding: 0 2px; }
+.code-green { color: #50fa7b; }
+.code-blue { color: #8be9fd; }
+
+.payload-pill { position: absolute; padding: 6px 12px; background: var(--red); color: white; font-family: var(--mono); font-size: 0.8rem; font-weight: bold; border-radius: 20px; opacity: 0; z-index: 10; transition: all 1s ease-in-out; pointer-events: none; white-space: nowrap; box-shadow: 0 0 15px var(--red); left: 20%; top: 40%; }
+
+.alert-box { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%) scale(0.5); background: #fff; border: 1px solid #999; border-radius: 3px; padding: 15px 25px; color: #000; font-family: Tahoma, sans-serif; font-size: 0.9rem; box-shadow: 2px 2px 5px rgba(0,0,0,0.3); opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 20; text-align: center; }
+.alert-box button { margin-top: 15px; padding: 5px 20px; background: #ddd; border: 1px solid #aaa; border-radius: 2px; cursor: pointer; }
+.alert-box.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+@keyframes pulseLight { 0%, 100% { opacity: 1; box-shadow: 0 0 10px var(--green); } 50% { opacity: 0.5; box-shadow: 0 0 2px var(--green); } }
+
+/* Database records visual */
+.db-records { position: absolute; bottom: 20px; width: 80%; display: flex; flex-direction: column; gap: 4px; }
+.db-record { height: 6px; background: rgba(255,171,0,0.3); border-radius: 3px; width: 100%; transition: all 0.3s; }
+.db-record.hacked { background: var(--red); box-shadow: 0 0 8px var(--red); }

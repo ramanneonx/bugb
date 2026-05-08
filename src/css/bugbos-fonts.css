@@ -1,0 +1,99 @@
+/* ── FONT OVERRIDES — Syne + Plus Jakarta Sans + Urbanist ── */
+
+/* Display font: Syne — bold brand/heading feeling */
+.brand-text-os,
+.hero-title,
+.stat-value,
+.view-header h2,
+.modal-header,
+.study-hero h2,
+.page-title,
+.vuln-detail-header h2,
+h1, h2, h3 {
+  font-family: 'Syne', sans-serif;
+}
+
+/* UI font: Plus Jakarta Sans — clean modern interface */
+body,
+input, textarea, select,
+.btn-primary, .btn-secondary, .btn-ghost, .btn-acid, .btn-danger,
+.nav-item,
+.topbar-chip,
+.sc-body,
+.tool-desc,
+.case-steps,
+.note-card-body,
+.pipe-card-title,
+.pipe-card-meta,
+.form-group label,
+.report-out,
+.atk-step,
+.phase-item-body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Alt font: Urbanist — uppercase labels, section headers */
+.nav-section,
+.panel-header,
+.stat-label,
+.filter-btn,
+.tag,
+.pipe-header,
+.xp-level-badge,
+.brand-text-sub,
+.streakbar,
+.result-type,
+.sc-tag,
+.case-target {
+  font-family: 'Urbanist', sans-serif;
+}
+
+/* Mono: JetBrains Mono — code only */
+.mono,
+.tool-cmd,
+.xp-level-badge,
+.sev-badge,
+code, pre,
+.rich-editor code,
+.markdown-body code,
+.markdown-body pre,
+.atk-payload,
+.topbar-chip,
+.report-out {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── HERO TITLE styling ── */
+.hero-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.15;
+}
+
+/* ── VIEW H2 ── */
+.view-header h2 { font-weight: 800; letter-spacing: -0.5px; }
+.study-hero h2  { font-weight: 900; letter-spacing: -1px; font-size: 2rem; }
+
+/* ── ATTACK MAP ── */
+.attack-map{display:flex;flex-direction:column;align-items:center;gap:12px;padding:12px}
+.map-node{padding:7px 18px;border-radius:20px;font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;font-family:'Urbanist',sans-serif}
+.map-node.root{background:linear-gradient(135deg,var(--acid),var(--cyan));color:#000;box-shadow:0 4px 20px var(--acid-glow)}
+.map-node.recon{background:var(--cyan-dim);border:1px solid var(--cyan);color:var(--cyan)}
+.map-node.vuln{background:var(--red-dim);border:1px solid var(--red);color:var(--red)}
+.map-node.logic{background:var(--amber-dim);border:1px solid var(--amber);color:var(--amber)}
+.map-branches{display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
+.map-branch{display:flex;flex-direction:column;align-items:center;gap:8px}
+.map-leaf{font-size:.72rem;color:var(--text-secondary);background:var(--bg-glass);border:1px solid var(--border);padding:3px 12px;border-radius:12px;font-family:'Urbanist',sans-serif}
+
+/* ── Q-INPUT (legacy compat) ── */
+.q-input{background:var(--bg-elevated);border:1px solid var(--border);color:var(--text-primary);padding:9px 13px;border-radius:var(--r-sm);font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;width:100%;outline:none;transition:all var(--transition)}
+.q-input:focus{border-color:var(--acid);box-shadow:0 0 0 3px rgba(0,255,159,0.08)}
+select.q-input option{background:var(--bg-elevated)}
+
+/* ── QUICK FORM ── */
+.quick-form{display:flex;flex-direction:column;gap:10px}
+
+/* ── VULN CHECKLIST ── */
+.vuln-checklist li{font-size:.82rem;padding:5px 0;color:var(--text-secondary);border-bottom:1px solid rgba(255,255,255,.03);display:flex;align-items:center;gap:8px}
+.vuln-checklist li::before{content:'→';color:var(--acid);font-weight:700;font-family:'JetBrains Mono',monospace}

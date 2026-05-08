@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>bugbOS — Bug Bounty Operating System</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Urbanist:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/bugbos-theme.css">
+<link rel="stylesheet" href="css/bugbos-layout.css">
+<link rel="stylesheet" href="css/bugbos-components.css">
+<link rel="stylesheet" href="css/bugbos-fonts.css">
+<link rel="stylesheet" href="css/bugbos-extra.css">
+<link rel="stylesheet" href="css/bugbos-kanban.css">
+<link rel="stylesheet" href="css/vuln-anims.css">
+<link rel="stylesheet" href="css/bugbos-polish.css">
+
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div id="app">
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">⚡</div>
+    <div>
+      <div class="brand-text-os">bugbOS</div>
+      <div class="brand-text-sub">v3.0 // Elite</div>
+    </div>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-section">Command Center</div>
+    <a class="nav-item active" data-view="dashboard">
+      <span class="nav-icon">🎯</span>Dashboard
+      <span class="nav-badge acid" id="badge-bugs">0</span>
+    </a>
+    <a class="nav-item" data-view="tracker">
+      <span class="nav-icon">📡</span>Bug Tracker
+    </a>
+    <a class="nav-item" data-view="kanban">
+      <span class="nav-icon">🗂️</span>Kanban Board
+    </a>
+    <a class="nav-item" data-view="targets">
+      <span class="nav-icon">🎯</span>Targets
+    </a>
+    <a class="nav-item" data-view="ai">
+      <span class="nav-icon">🤖</span>AI Investigator
+    </a>
+    <div class="nav-section">Academy</div>
+    <a class="nav-item" data-view="mindset">
+      <span class="nav-icon">🧠</span>Mindset & Strategy
+    </a>
+    <a class="nav-item" data-view="recon">
+      <span class="nav-icon">🔍</span>Recon Mastery
+    </a>
+    <a class="nav-item" data-view="vulns">
+      <span class="nav-icon">⚡</span>Vulnerability Atlas
+    </a>
+    <a class="nav-item" data-view="tools">
+      <span class="nav-icon">🔧</span>Tools Arsenal
+    </a>
+    <a class="nav-item" data-view="casestudies">
+      <span class="nav-icon">📖</span>Case Studies
+    </a>
+    <a class="nav-item" data-view="animations">
+      <span class="nav-icon">🎬</span>Attack Animations
+    </a>
+    <div class="nav-section">Workspace</div>
+    <a class="nav-item" data-view="notes">
+      <span class="nav-icon">📝</span>My Notes
+    </a>
+    <a class="nav-item" data-view="payloads">
+      <span class="nav-icon">💣</span>Payload Arsenal
+    </a>
+    <a class="nav-item" data-view="reports">
+      <span class="nav-icon">📋</span>Report Builder
+    </a>
+    <a class="nav-item" data-view="analytics">
+      <span class="nav-icon">📊</span>Analytics
+    </a>
+    <a class="nav-item" data-view="focus">
+      <span class="nav-icon">⏱️</span>Focus Timer
+    </a>
+    <a class="nav-item" data-view="export">
+      <span class="nav-icon">📤</span>Export / Backup
+    </a>
+    <div class="nav-section">Controls</div>
+    <div style="padding:10px 20px; font-size:0.7rem; color:var(--text-tertiary)">
+      <div style="margin-bottom:8px"><span style="background:rgba(255,255,255,0.1); padding:2px 4px; border-radius:3px; color:var(--text-secondary)">CTRL+K</span> Global Search</div>
+      <div><span style="background:rgba(255,255,255,0.1); padding:2px 4px; border-radius:3px; color:var(--text-secondary)">ESC</span> Close Modals</div>
+    </div>
+  </div>
+  <div class="sidebar-footer">
+
+    <div class="xp-row">
+      <span class="muted small">Hacker Level</span>
+      <span class="xp-level-badge" id="xp-level">LVL 1</span>
+    </div>
+    <div class="xp-bar"><div class="xp-fill" id="xp-fill" style="width:5%"></div></div>
+    <div class="streak-bar">
+      <span class="streak-fire">🔥</span>
+      <span id="streak-count">0</span> day streak
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main-area">
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="menu-btn" id="menu-btn">☰</button>
+      <div class="page-title" id="page-title">Dashboard</div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-chip">
+        <div class="chip-dot"></div>
+        <span id="stat-bugs">0</span> bugs
+      </div>
+      <div class="topbar-chip">💰 $<span id="stat-bounty">0</span></div>
+      <div class="topbar-chip">🎯 <span id="stat-targets">0</span> targets</div>
+      <div class="topbar-chip" id="autosave-status" style="color:var(--text-tertiary); font-size:0.7rem; cursor:pointer" onclick="showView('export')" title="Click to go to Export & Backup">💾 Auto-save on</div>
+    </div>
+  </header>
+
+  <div class="views-container">
+
+    <!-- ═══ DASHBOARD ═══ -->
+    <section class="view active" id="view-dashboard">
+      <div class="hero-banner">
+        <div class="hero-text">
+          <div class="hero-title">"Not: <em style="color:var(--text-secondary)">What tool?</em><br>But: <span style="color:var(--acid)">What mental model?</span>"</div>
+          <div class="hero-sub">Think deeper. Hunt smarter. — From your notes</div>
+        </div>
+        <div class="hero-visual">
+          <div class="rotating-ring"></div>
+          <div class="center-icon">🎯</div>
+        </div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card acid">
+          <div class="stat-icon">🐛</div>
+          <div class="stat-value acid" id="d-bugs">0</div>
+          <div class="stat-label">Bugs Found</div>
+        </div>
+        <div class="stat-card amber">
+          <div class="stat-icon">💰</div>
+          <div class="stat-value amber">$<span id="d-bounty">0</span></div>
+          <div class="stat-label">Total Bounty</div>
+        </div>
+        <div class="stat-card cyan">
+          <div class="stat-icon">🎯</div>
+          <div class="stat-value cyan" id="d-targets">0</div>
+          <div class="stat-label">Active Targets</div>
+        </div>
+        <div class="stat-card purple">
+          <div class="stat-icon">📚</div>
+          <div class="stat-value purple" id="d-notes">0</div>
+          <div class="stat-label">Study Notes</div>
+        </div>
+      </div>
+      <div class="dash-grid">
+        <div class="panel">
+          <div class="panel-header"><div class="ph-dot"></div>Recent System Activity</div>
+          <div id="activity-feed" style="display:flex; flex-direction:column; gap:8px; max-height:200px; overflow-y:auto">
+            <div class="muted small" style="text-align:center; padding:20px">No activity recorded...</div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><div class="ph-dot"></div>Attack Surface Map</div>
+          <div class="attack-map" id="attack-map">
+            <div class="map-node root">TARGET</div>
+            <div class="map-branches">
+              <div class="map-branch"><div class="map-node recon">RECON</div><div class="map-leaf">Subdomains</div><div class="map-leaf">Ports</div><div class="map-leaf">JS Files</div></div>
+              <div class="map-branch"><div class="map-node vuln">VULNS</div><div class="map-leaf">XSS</div><div class="map-leaf">SQLi</div><div class="map-leaf">IDOR</div></div>
+              <div class="map-branch"><div class="map-node logic">LOGIC</div><div class="map-leaf">Auth</div><div class="map-leaf">Race</div><div class="map-leaf">Chain</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><div class="ph-dot"></div>Quick Add Bug</div>
+          <div class="quick-form" style="display:flex;flex-direction:column;gap:10px">
+            <input type="text" class="q-input" id="q-title" placeholder="Bug title...">
+            <select class="q-input" id="q-severity">
+              <option value="P1">P1 — Critical</option>
+              <option value="P2">P2 — High</option>
+              <option value="P3" selected>P3 — Medium</option>
+              <option value="P4">P4 — Low</option>
+            </select>
+            <input type="text" class="q-input" id="q-target" placeholder="Target domain...">
+            <button class="btn-primary" onclick="quickAddBug()">+ Add Bug</button>
+          </div>
+        </div>
+        <div class="panel full-width">
+          <div class="panel-header"><div class="ph-dot"></div>Bug Pipeline</div>
+          <div class="pipeline">
+            <div class="pipeline-col">
+              <div class="pipe-header found">🔍 Found</div>
+              <div class="pipe-items" id="pipe-found-items"></div>
+            </div>
+            <div class="pipeline-col">
+              <div class="pipe-header reported">📤 Reported</div>
+              <div class="pipe-items" id="pipe-reported-items"></div>
+            </div>
+            <div class="pipeline-col">
+              <div class="pipe-header triaged">⚙️ Triaged</div>
+              <div class="pipe-items" id="pipe-triaged-items"></div>
+            </div>
+            <div class="pipeline-col">
+              <div class="pipe-header bounty">💰 Bounty</div>
+              <div class="pipe-items" id="pipe-bounty-items"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ KANBAN BOARD ═══ -->
+    <section class="view" id="view-kanban">
+      <div class="view-header">
+        <h2>🗂️ Bug Pipeline — Kanban</h2>
+        <button class="btn-primary" onclick="showAddBugModal()">+ New Bug</button>
+      </div>
+      <div class="kanban-board" id="kanban-board">
+        <!-- columns rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ═══ ANALYTICS ═══ -->
+
+    <section class="view" id="view-analytics">
+      <div class="view-header">
+        <h2>📊 Analytics & Insights</h2>
+        <button class="btn-ghost" onclick="buildAnalytics()">↻ Refresh</button>
+      </div>
+      <div class="stats-grid">
+        <div class="panel full-width">
+          <div class="panel-header"><div class="ph-dot"></div>Win Rate & Earnings</div>
+          <div id="chart-winrate"></div>
+        </div>
+      </div>
+      <div class="dash-grid">
+        <div class="panel">
+          <div class="panel-header"><div class="ph-dot"></div>Severity Distribution</div>
+          <div id="chart-severity"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><div class="ph-dot"></div>Bug Type Breakdown</div>
+          <div id="chart-type"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><div class="ph-dot"></div>Status Pipeline</div>
+          <div id="chart-status"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><div class="ph-dot"></div>Platforms Hunted</div>
+          <div id="chart-platform"></div>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:20px">
+        <div class="panel-header"><div class="ph-dot"></div>Bounty Timeline</div>
+        <div id="chart-bounty"></div>
+      </div>
+    </section>
+
+    <!-- ═══ FOCUS TIMER ═══ -->
+    <section class="view" id="view-focus">
+      <div class="view-header"><h2>⏱️ Focus Hunter Mode</h2></div>
+      <div class="dash-grid">
+        <div class="panel" style="text-align:center">
+          <div id="timer-mode" style="font-family:'Urbanist',sans-serif; font-size:0.75rem; letter-spacing:2px; color:var(--acid); margin-bottom:20px">🎯 HUNT SESSION</div>
+          <div id="timer-display" style="font-family:'Syne',sans-serif; font-size:5rem; font-weight:900; color:var(--text-primary); letter-spacing:-2px; margin-bottom:20px">25:00</div>
+          <div style="display:flex; gap:8px; justify-content:center; margin-bottom:20px">
+            <button class="timer-mode-btn active" data-mode="work" onclick="switchTimerMode('work')" style="font-family:'Urbanist',sans-serif; font-size:0.7rem; padding:6px 14px; border-radius:20px; border:1px solid var(--acid); background:transparent; color:var(--acid); cursor:pointer">25 MIN HUNT</button>
+            <button class="timer-mode-btn" data-mode="break" onclick="switchTimerMode('break')" style="font-family:'Urbanist',sans-serif; font-size:0.7rem; padding:6px 14px; border-radius:20px; border:1px solid var(--border); background:transparent; color:var(--text-secondary); cursor:pointer">5 MIN BREAK</button>
+          </div>
+          <input type="text" id="timer-goal" class="q-input" style="margin-bottom:20px; text-align:center" placeholder="Session goal: e.g. Find 1 XSS on target.com">
+          <div style="display:flex; gap:10px; justify-content:center">
+            <button class="btn-primary" id="btn-timer-start" onclick="startTimer()">▶ Start Session</button>
+            <button class="btn-ghost hidden" id="btn-timer-pause" onclick="pauseTimer()">⏸ Pause</button>
+            <button class="btn-ghost" onclick="resetTimer()">↺ Reset</button>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><div class="ph-dot"></div>Session History</div>
+          <div id="session-log" style="display:flex; flex-direction:column; gap:8px; max-height:400px; overflow-y:auto"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ EXPORT / BACKUP ═══ -->
+    <section class="view" id="view-export">
+      <div class="view-header"><h2>📤 Export & Backup</h2></div>
+      <div class="dash-grid">
+        <div class="panel">
+          <div class="panel-header"><div class="ph-dot"></div>Export Data</div>
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:var(--bg-glass); border-radius:var(--r-sm)">
+              <div><div style="font-weight:700">Bug Tracker</div><div class="muted small">Export all bugs as CSV</div></div>
+              <button class="btn-acid" onclick="exportBugsCSV()">Download CSV</button>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:var(--bg-glass); border-radius:var(--r-sm)">
+              <div><div style="font-weight:700">Research Notes</div><div class="muted small">Export notes as Markdown</div></div>
+              <button class="btn-acid" onclick="exportNotesMarkdown()">Download .md</button>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:var(--bg-glass); border-radius:var(--r-sm)">
+              <div><div style="font-weight:700">Bug Report</div><div class="muted small">Export current report as Markdown</div></div>
+              <button class="btn-acid" onclick="exportReport()">Download Report</button>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><div class="ph-dot"></div>Full Backup</div>
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <div style="background:rgba(0,255,159,0.05); border:1px solid var(--acid); border-radius:var(--r-sm); padding:20px; text-align:center">
+              <div style="font-size:2rem; margin-bottom:10px">🔒</div>
+              <div style="font-weight:700; margin-bottom:5px">Full OS Backup</div>
+              <div class="muted small" style="margin-bottom:15px">Saves all bugs, targets, notes, and activity to a single JSON file</div>
+              <button class="btn-primary" onclick="exportFullBackup()">⬇ Export Full Backup</button>
+            </div>
+            <div style="background:var(--bg-glass); border:1px solid var(--border); border-radius:var(--r-sm); padding:20px; text-align:center">
+              <div style="font-size:2rem; margin-bottom:10px">📂</div>
+              <div style="font-weight:700; margin-bottom:5px">Restore Backup</div>
+              <div class="muted small" style="margin-bottom:15px">Import a previously exported backup to restore all data</div>
+              <label class="btn-ghost" style="cursor:pointer">⬆ Import Backup <input type="file" accept=".json" hidden onchange="importBackup(this)"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Auto-Save Recovery -->
+      <div class="panel" style="margin-top:20px">
+        <div class="panel-header"><div class="ph-dot"></div>⚡ Auto-Save Recovery</div>
+        <div id="autosave-info">
+          <div class="muted small" style="padding:20px; text-align:center">Loading auto-save info...</div>
+        </div>
+      </div>
+
+      <!-- Upgrade Safety Guide -->
+      <div class="panel" style="margin-top:20px; border-color:var(--amber)">
+        <div class="panel-header" style="color:var(--amber)"><div class="ph-dot" style="background:var(--amber)"></div>🔒 Upgrade Safety Guide</div>
+        <div style="display:flex; flex-direction:column; gap:10px; font-size:0.85rem">
+          <div style="display:flex; gap:12px; align-items:flex-start; padding:10px; background:var(--bg-glass); border-radius:var(--r-sm)">
+            <span style="font-size:1.4rem">1️⃣</span>
+            <div><div style="font-weight:700; margin-bottom:3px">Before Any Upgrade — Export Full Backup</div><div class="muted small">Click "Export Full Backup" above, save it to <code>e:\bugbounty\userdata\backups\</code></div></div>
+          </div>
+          <div style="display:flex; gap:12px; align-items:flex-start; padding:10px; background:var(--bg-glass); border-radius:var(--r-sm)">
+            <span style="font-size:1.4rem">2️⃣</span>
+            <div><div style="font-weight:700; margin-bottom:3px">Run backup.bat for your files</div><div class="muted small">Backs up screenshots, attachments, reports in <code>userdata/</code> with a timestamp</div></div>
+          </div>
+          <div style="display:flex; gap:12px; align-items:flex-start; padding:10px; background:var(--bg-glass); border-radius:var(--r-sm)">
+            <span style="font-size:1.4rem">3️⃣</span>
+            <div><div style="font-weight:700; margin-bottom:3px">Update code safely — your data is separate</div><div class="muted small">The <code>userdata/</code> folder is NEVER touched by code upgrades</div></div>
+          </div>
+          <div style="display:flex; gap:12px; align-items:flex-start; padding:10px; background:var(--bg-glass); border-radius:var(--r-sm)">
+            <span style="font-size:1.4rem">4️⃣</span>
+            <div><div style="font-weight:700; margin-bottom:3px">After upgrade — Import Backup if needed</div><div class="muted small">Use "Import Backup" above to restore your bugs, notes, and targets</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══ BUG TRACKER ═══ -->
+
+    <section class="view" id="view-tracker">
+      <div class="view-header">
+        <h2>Bug Tracker</h2>
+        <div class="view-header-actions">
+          <button class="btn-primary" onclick="showAddBugModal()">+ New Bug</button>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="P1">P1 Critical</button>
+        <button class="filter-btn" data-filter="P2">P2 High</button>
+        <button class="filter-btn" data-filter="P3">P3 Medium</button>
+        <button class="filter-btn" data-filter="P4">P4 Low</button>
+      </div>
+      <div class="panel" style="overflow-x:auto">
+        <table class="tools-table" style="width:100%">
+          <thead><tr><th>Sev</th><th>Title</th><th>Target</th><th>Type</th><th>Status</th><th>Bounty</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="bugs-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══ TARGET MANAGEMENT ═══ -->
+    <section class="view" id="view-targets">
+      <div class="view-header">
+        <h2>🎯 Target Intelligence</h2>
+        <button class="btn-primary" onclick="showAddTargetModal()">+ Add Target</button>
+      </div>
+      <div class="stats-grid" id="target-stats-grid">
+        <!-- Target stats here -->
+      </div>
+      <div class="dash-grid" id="targets-grid">
+        <!-- Target cards here -->
+      </div>
+    </section>
+
+    <!-- ═══ TARGET DETAIL ═══ -->
+    <section class="view" id="view-target-detail">
+      <div class="view-header">
+        <button class="btn-ghost btn-sm" onclick="showView('targets')">← Back to Targets</button>
+        <h2 id="td-name">target.com</h2>
+        <div class="view-header-actions">
+          <span class="tag tag-acid" id="td-status">ACTIVE</span>
+          <button class="btn-danger btn-sm" onclick="deleteCurrentTarget()">Delete</button>
+        </div>
+      </div>
+      <div class="target-dashboard-grid">
+        <div class="panel">
+          <div class="panel-header"><div class="ph-dot"></div>Target Notes</div>
+          <textarea id="td-notes" class="q-input" style="height:200px" placeholder="General scope, exclusions, bounty table..."></textarea>
+          <button class="btn-primary btn-sm" style="margin-top:10px" onclick="saveTargetNotes()">Save Notes</button>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><div class="ph-dot"></div>Recon Checklist</div>
+          <ul class="checklist-items" id="td-checklist"></ul>
+          <div class="add-item-form">
+            <input type="text" id="td-new-item" class="q-input" placeholder="New task...">
+            <button class="btn-acid" onclick="addTargetChecklistItem()">Add</button>
+          </div>
+        </div>
+        <div class="panel full-width tools-panel">
+          <div class="panel-header"><div class="ph-dot"></div>Tool Logs & Outputs</div>
+          <div class="tools-form">
+            <input type="text" id="td-tool-name" class="q-input" placeholder="Tool (e.g. Nuclei)">
+            <textarea id="td-tool-out" class="q-input" style="height:120px" placeholder="Paste findings here..."></textarea>
+            <button class="btn-primary" onclick="addTargetToolLog()">Log Result</button>
+          </div>
+          <table class="tools-table">
+            <thead><tr><th>Tool</th><th>Findings</th><th>Date</th><th>Actions</th></tr></thead>
+            <tbody id="td-tools-log"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══ AI INVESTIGATOR ═══ -->
+    <section class="view" id="view-ai">
+      <div class="view-header">
+        <h2>🤖 AI-Assisted Investigation</h2>
+      </div>
+      <div class="dash-grid">
+        <div class="panel">
+          <div class="panel-header"><div class="ph-dot"></div>Hypothesis Engine</div>
+          <p class="muted small" style="margin-bottom:12px">Describe a feature or a URL to generate attack hypotheses.</p>
+          <textarea id="ai-input" class="q-input" style="height:100px" placeholder="e.g. A file upload feature that only allows images..."></textarea>
+          <button class="btn-primary" style="margin-top:12px" onclick="generateHypothesis()">⚡ Generate Hypotheses</button>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><div class="ph-dot"></div>Investigation Log</div>
+          <div id="ai-output" style="font-size:0.88rem; line-height:1.7; color:var(--text-secondary)">
+            AI insights will appear here...
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ MINDSET ═══ -->
+
+    <section class="view" id="view-mindset">
+      <div class="study-hero" style="padding-top:20px">
+        <div class="sh-icon">🧠</div>
+        <h2 style="color:var(--purple)">Mindset & Strategy</h2>
+        <p>The mental models that separate elite hunters from beginners</p>
+      </div>
+      <div class="study-cards" id="mindset-cards"></div>
+    </section>
+
+    <!-- ═══ RECON ═══ -->
+    <section class="view" id="view-recon">
+      <div class="study-hero" style="padding-top:20px">
+        <div class="sh-icon">🔍</div>
+        <h2 style="color:var(--cyan)">Recon Mastery</h2>
+        <p>Every recon technique systematized — from passive to active</p>
+      </div>
+      <div class="recon-phases" id="recon-content"></div>
+    </section>
+
+    <!-- ═══ VULN ATLAS ═══ -->
+    <section class="view" id="view-vulns">
+      <div class="vuln-split-layout">
+        <div class="panel vuln-sidebar">
+          <div class="panel-header"><div class="ph-dot"></div>Atlas Index</div>
+          <div class="vuln-search" style="margin-bottom:10px">
+            <input type="text" id="vuln-search-input" class="q-input" placeholder="🔍 Search attacks..." oninput="filterVulnIndex(this.value)">
+          </div>
+          <div class="vuln-index-list" id="vuln-index-list"></div>
+        </div>
+        <div class="panel vuln-detail-pane" id="vuln-detail-pane">
+          <div id="vuln-empty-state" class="vuln-empty-state">
+            <div style="font-size:3rem">⚡</div>
+            <h3>Select a vulnerability</h3>
+            <p class="muted">View attack flows and edit your personal notes</p>
+          </div>
+          <div id="vuln-detail-content" class="hidden">
+            <div class="vuln-detail-header">
+              <div>
+                <h2 id="vd-title" style="margin:0"></h2>
+                <p id="vd-desc" class="muted" style="margin:4px 0 0"></p>
+              </div>
+              <div style="display:flex;gap:10px">
+                <button id="btn-vuln-edit" class="btn-acid" onclick="toggleVulnEditor()">✏️ Edit Notes</button>
+                <button id="btn-vuln-save" class="btn-primary hidden" onclick="saveVulnNotes()">💾 Save</button>
+              </div>
+            </div>
+            <div id="vd-builtin" style="margin-bottom:20px">
+              <div id="vd-anim"></div>
+              <div style="margin-top:14px">
+                <h4 style="margin-bottom:8px;color:var(--text-secondary);font-size:.82rem;text-transform:uppercase;letter-spacing:1px">Key Checks</h4>
+                <ul id="vd-checks" class="vuln-checklist" style="list-style:none;display:flex;flex-direction:column;gap:4px"></ul>
+              </div>
+            </div>
+            <div class="vuln-notes-section">
+              <h3 style="border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:12px;font-size:.95rem">📝 Your Advanced Notes</h3>
+              <div id="vd-notes-display" class="notes-content-area"></div>
+              <div id="vd-notes-editor-container" class="hidden">
+                <div class="editor-toolbar">
+                  <button class="editor-btn" onclick="formatDoc('bold')"><b>B</b></button>
+                  <button class="editor-btn" onclick="formatDoc('italic')"><i>I</i></button>
+                  <button class="editor-btn" onclick="formatDoc('underline')"><u>U</u></button>
+                  <div class="editor-divider"></div>
+                  <button class="editor-btn" onclick="formatDoc('insertUnorderedList')">• List</button>
+                  <button class="editor-btn" onclick="formatDoc('formatBlock','PRE')">&lt;/&gt;</button>
+                  <div class="editor-divider"></div>
+                  <button class="editor-btn" onclick="document.getElementById('vuln-img-upload').click()">🖼️ Image</button>
+                  <input type="file" id="vuln-img-upload" accept="image/*" class="hidden" onchange="insertImage(this)">
+                </div>
+                <div id="vd-editor" class="rich-editor" contenteditable="true" placeholder="Type your advanced concepts, drag & drop images..."></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ TOOLS ═══ -->
+    <section class="view" id="view-tools">
+      <div class="study-hero" style="padding-top:20px">
+        <div class="sh-icon">🔧</div>
+        <h2 style="color:var(--acid)">Tools Arsenal</h2>
+        <p>Every essential tool with commands — ready to copy & run</p>
+      </div>
+      <div class="tools-grid" id="tools-content"></div>
+    </section>
+
+    <!-- ═══ CASE STUDIES ═══ -->
+    <section class="view" id="view-casestudies">
+      <div class="study-hero" style="padding-top:20px">
+        <div class="sh-icon">📖</div>
+        <h2 style="color:var(--amber)">Case Studies</h2>
+        <p>Real high-impact bugs — Tesla, Uber, ATO chains and more</p>
+      </div>
+      <div class="cases-grid" id="cases-content"></div>
+    </section>
+
+    <!-- ═══ ATTACK ANIMATIONS ═══ -->
+    <section class="view" id="view-animations">
+      <div class="view-header">
+        <h2>🎬 Attack Animations</h2>
+        <p class="muted" style="font-size:.88rem">Understand exactly how vulnerabilities work — visually</p>
+      </div>
+      <div class="anim-layout">
+        <div class="anim-sidebar">
+          <div class="panel" style="padding:14px">
+            <div class="panel-header"><div class="ph-dot"></div>Attack Index</div>
+            <input type="text" class="q-input" id="anim-search" placeholder="🔍 Search..." onkeyup="filterAnims()" style="margin-bottom:10px;font-size:.85rem;padding:8px 12px">
+            <div class="anim-list" id="anim-list"></div>
+          </div>
+        </div>
+        <div class="anim-main">
+          <div class="panel anim-stage" id="anim-stage" style="min-height:280px;display:flex;align-items:center;justify-content:center;padding:20px">
+            <div style="text-align:center;color:var(--text-tertiary)"><div style="font-size:2.5rem;margin-bottom:8px">🎬</div><p>Select an attack from the index</p></div>
+          </div>
+          <div class="panel anim-notes">
+            <div class="panel-header" style="justify-content:space-between">
+              <span><div class="ph-dot" style="display:inline-block;margin-right:6px"></div>Advanced Notes</span>
+              <button class="btn-ghost btn-sm" onclick="editAnimNote()">Edit</button>
+            </div>
+            <div id="anim-note-content" style="font-size:.88rem;line-height:1.7;color:var(--text-secondary);min-height:60px"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ NOTES ═══ -->
+    <section class="view" id="view-notes">
+      <div class="view-header">
+        <h2>📝 My Notes</h2>
+        <button class="btn-primary" onclick="addNote()">+ New Note</button>
+      </div>
+      <div class="search-bar" style="margin-bottom:18px">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="notes-search" placeholder="Search your notes..." oninput="searchNotes(this.value)">
+      </div>
+      <div class="notes-masonry" id="notes-grid"></div>
+    </section>
+
+    <!-- ═══ PAYLOAD ARSENAL ═══ -->
+    <section class="view" id="view-payloads">
+      <div class="view-header">
+        <h2>💣 Payload Arsenal</h2>
+        <div class="view-header-actions">
+          <input type="text" id="payload-search" placeholder="🔍 Search payloads..." style="width:240px;font-size:.86rem" oninput="filterPayloads(this.value)">
+        </div>
+      </div>
+      <div class="filter-bar" id="payload-filter-bar"></div>
+      <div id="payload-grid" style="display:flex;flex-direction:column;gap:14px"></div>
+    </section>
+
+    <!-- ═══ REPORT BUILDER ═══ -->
+    <section class="view" id="view-reports">
+      <div class="view-header"><h2>📋 Report Builder</h2></div>
+      <div class="report-layout">
+        <div class="panel report-form">
+          <div class="panel-header"><div class="ph-dot"></div>Build Report</div>
+          <div class="form-group"><label>Title</label><input class="q-input" id="r-title" placeholder="Stored XSS in /profile endpoint"></div>
+          <div class="form-group"><label>Severity</label>
+            <select class="q-input" id="r-severity"><option>P1 - Critical</option><option>P2 - High</option><option>P3 - Medium</option><option>P4 - Low</option></select>
+          </div>
+          <div class="form-group"><label>Asset / URL</label><input class="q-input" id="r-asset" placeholder="https://target.com/profile"></div>
+          <div class="form-group"><label>Parameter</label><input class="q-input" id="r-param" placeholder="username"></div>
+          <div class="form-group"><label>Description</label><textarea class="q-input" id="r-desc" rows="3" placeholder="Technical description..."></textarea></div>
+          <div class="form-group"><label>Steps to Reproduce</label><textarea class="q-input" id="r-steps" rows="4" placeholder="1. Navigate to...&#10;2. Enter payload...&#10;3. Observe..."></textarea></div>
+          <div class="form-group"><label>Impact</label><textarea class="q-input" id="r-impact" rows="2" placeholder="Attacker can..."></textarea></div>
+          <div class="form-group"><label>Remediation</label><textarea class="q-input" id="r-fix" rows="2" placeholder="Sanitize input with..."></textarea></div>
+          <div style="display:flex;gap:10px">
+            <button class="btn-primary" onclick="generateReport()">Generate Report</button>
+            <button class="btn-ghost" onclick="copyReport()">Copy</button>
+          </div>
+        </div>
+        <div class="panel report-preview">
+          <div class="panel-header"><div class="ph-dot"></div>Preview</div>
+          <div id="report-output" class="report-out" style="flex:1">Fill the form and click Generate...</div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /views-container -->
+</main>
+</div><!-- /app -->
+
+<!-- ═══ MODALS ═══ -->
+
+<!-- Add Bug Modal -->
+<div class="modal-overlay hidden" id="modal-bug">
+  <div class="modal">
+    <div class="modal-header">New Bug Report <button class="modal-close" onclick="closeModal('modal-bug')">✕</button></div>
+    <div class="form-group"><label>Title</label><input class="q-input" id="m-title" placeholder="Reflected XSS in search param"></div>
+    <div class="form-group"><label>Severity</label>
+      <select class="q-input" id="m-severity"><option value="P1">P1 — Critical</option><option value="P2">P2 — High</option><option value="P3" selected>P3 — Medium</option><option value="P4">P4 — Low</option></select>
+    </div>
+    <div class="form-group"><label>Target</label><input class="q-input" id="m-target" placeholder="target.com"></div>
+    <div class="form-group"><label>Type</label>
+      <select class="q-input" id="m-type"><option>XSS</option><option>SQLi</option><option>IDOR</option><option>SSRF</option><option>RCE</option><option>Auth Bypass</option><option>Business Logic</option><option>Info Disclosure</option><option>Other</option></select>
+    </div>
+    <div class="form-group"><label>Status</label>
+      <select class="q-input" id="m-status"><option value="found">Found</option><option value="reported">Reported</option><option value="triaged">Triaged</option><option value="bounty">Bounty Paid</option></select>
+    </div>
+    <div class="form-group"><label>Bounty ($)</label><input class="q-input" id="m-bounty" type="number" placeholder="0"></div>
+    <div class="form-group"><label>Notes</label><textarea class="q-input" id="m-notes" rows="3" placeholder="Steps, payload, impact..."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal('modal-bug')">Cancel</button>
+      <button class="btn-primary" onclick="saveBug()">Save Bug</button>
+    </div>
+  </div>
+</div>
+
+<!-- Note Modal -->
+<div class="modal-overlay hidden" id="modal-note">
+  <div class="modal">
+    <div class="modal-header">Note <button class="modal-close" onclick="closeModal('modal-note')">✕</button></div>
+    <div class="form-group"><label>Title</label><input class="q-input" id="n-title" placeholder="Note title..."></div>
+    <div class="form-group"><label>Tag</label>
+      <select class="q-input" id="n-tag"><option>Mindset</option><option>XSS</option><option>SQLi</option><option>IDOR</option><option>Recon</option><option>Auth</option><option>Business Logic</option><option>Tools</option><option>General</option></select>
+    </div>
+    <div class="form-group"><label>Content</label><textarea class="q-input" id="n-body" rows="5" placeholder="Your notes here..."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal('modal-note')">Cancel</button>
+      <button class="btn-primary" onclick="saveNote()">Save Note</button>
+    </div>
+  </div>
+</div>
+
+<!-- Anim Note Edit Modal -->
+<div class="modal-overlay hidden" id="modal-anim-note">
+  <div class="modal modal-wide">
+    <div class="modal-header">Edit Advanced Notes <button class="modal-close" onclick="closeModal('modal-anim-note')">✕</button></div>
+    <div class="editor-toolbar" style="display:flex;gap:4px;margin-bottom:10px;background:var(--bg-elevated);padding:8px;border-radius:var(--r-sm);flex-wrap:wrap">
+      <button class="editor-btn" onclick="document.execCommand('bold',false,null)"><b>B</b></button>
+      <button class="editor-btn" onclick="document.execCommand('italic',false,null)"><i>I</i></button>
+      <button class="editor-btn" onclick="document.execCommand('underline',false,null)"><u>U</u></button>
+      <button class="editor-btn" onclick="document.execCommand('insertUnorderedList',false,null)">• List</button>
+      <button class="editor-btn" onclick="document.execCommand('formatBlock',false,'H3')">H3</button>
+      <button class="editor-btn" onclick="document.execCommand('foreColor',false,'#00ff9f')">🟢</button>
+      <button class="editor-btn" onclick="document.execCommand('foreColor',false,'#ff2d55')">🔴</button>
+      <button class="editor-btn" onclick="document.execCommand('foreColor',false,'#00e5ff')">🔵</button>
+    </div>
+    <div id="anim-note-edit" contenteditable="true" class="rich-editor" style="min-height:300px"></div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal('modal-anim-note')">Cancel</button>
+      <button class="btn-primary" onclick="saveAnimNote()">Save Notes</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast hidden" id="toast"></div>
+
+<!-- Add Target Modal -->
+<div class="modal-overlay hidden" id="modal-target">
+  <div class="modal">
+    <div class="modal-header">Add New Target <button class="modal-close" onclick="closeModal('modal-target')">✕</button></div>
+    <div class="form-group"><label>Target Name/Domain</label><input class="q-input" id="mt-name" placeholder="tesla.com"></div>
+    <div class="form-group"><label>Platform</label>
+      <select class="q-input" id="mt-platform"><option>HackerOne</option><option>Bugcrowd</option><option>Intigriti</option><option>Private</option><option>Other</option></select>
+    </div>
+    <div class="form-group"><label>In Scope</label><textarea class="q-input" id="mt-scope" rows="3" placeholder="*.tesla.com, etc."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal('modal-target')">Cancel</button>
+      <button class="btn-primary" onclick="saveTarget()">Add Target</button>
+    </div>
+  </div>
+</div>
+
+<!-- Kanban Bug Detail Modal -->
+<div class="modal-overlay hidden" id="modal-kd">
+  <div class="modal modal-wide">
+    <div class="modal-header">
+      <span id="kd-title">Bug Detail</span>
+      <button class="modal-close" onclick="closeModal('modal-kd')">✕</button>
+    </div>
+    <input type="hidden" id="kd-bug-id">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:15px">
+      <div class="form-group"><label>Severity</label><div id="kd-severity" style="font-weight:800; font-size:1.2rem"></div></div>
+      <div class="form-group"><label>Target</label><div id="kd-target" class="mono"></div></div>
+      <div class="form-group"><label>Bug Type</label><div id="kd-type"></div></div>
+      <div class="form-group"><label>Status</label><div id="kd-status" style="color:var(--acid); font-weight:700"></div></div>
+      <div class="form-group"><label>Bounty</label><div id="kd-bounty" style="color:var(--amber); font-weight:800"></div></div>
+      <div class="form-group"><label>Date Found</label><div id="kd-date" class="muted small"></div></div>
+    </div>
+    <div class="form-group"><label>Notes</label><div id="kd-notes" style="font-size:0.85rem; color:var(--text-secondary); background:var(--bg-glass); padding:10px; border-radius:var(--r-sm); white-space:pre-wrap"></div></div>
+    <div class="panel-header" style="margin:15px 0 10px">Move to Status:</div>
+    <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:15px">
+      <button class="btn-ghost btn-sm" onclick="editKanbanBugStatus('Recon')">Recon</button>
+      <button class="btn-ghost btn-sm" onclick="editKanbanBugStatus('Testing')">Testing</button>
+      <button class="btn-ghost btn-sm" onclick="editKanbanBugStatus('Reported')">Reported</button>
+      <button class="btn-ghost btn-sm" onclick="editKanbanBugStatus('Triaged')">Triaged</button>
+      <button class="btn-acid btn-sm" onclick="editKanbanBugStatus('Accepted')">Accepted</button>
+      <button class="btn-ghost btn-sm" onclick="editKanbanBugStatus('Paid')" style="color:#ffd700; border-color:#ffd700">💰 Paid</button>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-danger" onclick="deleteKanbanBug()">🗑 Delete Bug</button>
+      <button class="btn-ghost" onclick="closeModal('modal-kd')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Global Search Modal -->
+
+<div class="modal-overlay hidden" id="modal-search">
+  <div class="modal modal-wide">
+    <div class="modal-header">
+      <div style="display:flex; align-items:center; gap:10px">
+        <span>🔍 Global OS Search</span>
+        <span class="muted small" style="font-weight:400">[ESC to close]</span>
+      </div>
+      <button class="modal-close" onclick="closeModal('modal-search')">✕</button>
+    </div>
+    <div class="search-bar" style="margin-bottom:20px">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="global-search-input" placeholder="Search bugs, targets, payloads, or methodologies..." oninput="performGlobalSearch(this.value)">
+    </div>
+    <div id="global-search-results" class="search-results">
+      <div style="text-align:center; padding:40px; color:var(--text-tertiary)">Type to search across the entire bugbOS...</div>
+    </div>
+  </div>
+</div>
+
+<script src="js/bugbos-data.js"></script>
+<script src="js/bugbos-analytics.js"></script>
+<script src="js/bugbos-export.js"></script>
+<script src="js/bugbos-timer.js"></script>
+<script src="js/bugbos-kanban.js"></script>
+<script src="js/bugbos-autosave.js"></script>
+
+
+
+<script src="js/academy.js"></script>
+</body>
+</html>
