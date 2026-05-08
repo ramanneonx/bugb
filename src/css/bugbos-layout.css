@@ -218,10 +218,48 @@
   flex-shrink: 0;
   gap: 16px;
   z-index: 10;
+  -webkit-app-region: drag; /* Make window draggable */
+}
+
+.topbar-left, .topbar-right, .window-controls {
+  -webkit-app-region: no-drag; /* Buttons shouldn't be draggable */
 }
 
 .topbar-left { display: flex; align-items: center; gap: 14px; }
 .topbar-right { display: flex; align-items: center; gap: 10px; }
+
+/* Window Controls */
+.window-controls {
+  display: flex;
+  margin-left: 15px;
+  border-left: 1px solid var(--border);
+  padding-left: 10px;
+}
+
+.win-btn {
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.75rem;
+  transition: all 0.2s;
+  border-radius: 4px;
+}
+
+.win-btn:hover {
+  background: var(--bg-glass-md);
+  color: var(--text-primary);
+}
+
+.win-close:hover {
+  background: var(--red-dim);
+  color: var(--red);
+}
 
 .page-title {
   font-size: 1rem;

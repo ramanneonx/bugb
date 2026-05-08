@@ -960,5 +960,10 @@ function rebootOS() {
   }, 500);
 }
 
+// Window Controls
+function windowMin() { if (window.api) window.api.minimize(); }
+function windowMax() { if (window.api) window.api.maximize(); }
+function windowClose() { if (window.api) window.api.close(); }
+
 } // end page guard
 
