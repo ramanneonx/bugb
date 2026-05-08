@@ -953,5 +953,12 @@ function renderActivity() {
   `).join('');
 }
 
+function rebootOS() {
+  toast('Rebooting System...', 'info');
+  setTimeout(() => {
+    window.location.reload();
+  }, 500);
+}
+
 } // end page guard
 
