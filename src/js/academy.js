@@ -565,7 +565,19 @@ function renderTargets() {
 }
 
 
-function showAddTargetModal() { document.getElementById('modal-target').classList.remove('hidden'); }
+function showAddTargetModal() { 
+  const m = document.getElementById('modal-target');
+  m.classList.remove('hidden');
+  // Clear fields
+  document.getElementById('mt-name').value = '';
+  document.getElementById('mt-scope').value = '';
+  // Force focus after a tiny delay to ensure modal is rendered
+  setTimeout(() => {
+    const input = document.getElementById('mt-name');
+    input.focus();
+    input.select();
+  }, 50);
+}
 
 function saveTarget() {
   const name = document.getElementById('mt-name').value.trim();
@@ -812,7 +824,7 @@ window.addEventListener('keydown', (e) => {
   if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
     e.preventDefault();
     document.getElementById('modal-search').classList.remove('hidden');
-    document.getElementById('global-search-input').focus();
+    setTimeout(() => document.getElementById('global-search-input').focus(), 50);
   }
   if (e.key === 'Escape') {
     closeModal('modal-search');

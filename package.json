@@ -11,13 +11,26 @@
   "author": "",
   "license": "ISC",
   "build": {
-    "appId": "com.bounty.workspace",
-    "productName": "Bug Bounty Workspace",
+    "appId": "com.ramanneonx.bugbos",
+    "productName": "bugbOS",
+    "copyright": "Copyright © 2026 ramanneonx",
+    "directories": {
+      "output": "dist"
+    },
     "win": {
-      "target": "nsis"
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
     }
   },
-  "dependencies": {
-    "electron": "^41.1.0"
+  "devDependencies": {
+    "electron": "^41.1.0",
+    "electron-builder": "^26.8.1"
   }
 }
