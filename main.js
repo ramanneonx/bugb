@@ -1,5 +1,6 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
+const fs = require('fs');
 
 function createWindow () {
   const win = new BrowserWindow({
@@ -7,33 +8,44 @@ function createWindow () {
     height: 900,
     webPreferences: {
       nodeIntegration: false,
-      contextIsolation: true
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js')
     },
-    // Hacker style window
     backgroundColor: '#0a0a0c',
-    show: false
+    show: false,
+    titleBarStyle: 'hidden'
   });
 
-  // Load the new bugbOS academy interface
-  win.loadFile(path.join(__dirname, 'src', 'academy.html'));
+  win.loadFile(path.join(__dirname, 'src', 'index.html'));
   
   win.once('ready-to-show', () => {
     win.show();
-    // Optional: Open DevTools automatically for debugging
-    // win.webContents.openDevTools();
   });
 }
+
+ipcMain.handle('export-pdf', async (event, { htmlContent, fileName }) => {
+  const win = new BrowserWindow({ show: false });
+  await win.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(htmlContent)}`);
+  
+  const pdfPath = path.join(app.getPath('desktop'), fileName || 'bug-report.pdf');
+  
+  const data = await win.webContents.printToPDF({
+    printBackground: true,
+    marginsType: 1,
+    pageSize: 'A4'
+  });
+
+  fs.writeFileSync(pdfPath, data);
+  win.close();
+  return pdfPath;
+});
 
 app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  if (process.platform !== 'darwin') app.quit();
 });
 
 app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
+  if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });

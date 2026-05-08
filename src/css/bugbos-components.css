@@ -206,3 +206,21 @@
 .tpl-editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
 .sections-editor{margin-bottom:14px}
 .sections-editor-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+
+.case-link {
+  display: inline-block;
+  margin-top: 15px;
+  color: var(--acid);
+  font-size: 0.75rem;
+  text-decoration: none;
+  font-weight: 700;
+  border: 1px solid var(--acid);
+  padding: 4px 10px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.case-link:hover {
+  background: var(--acid);
+  color: var(--bg);
+}

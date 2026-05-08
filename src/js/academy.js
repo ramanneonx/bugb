@@ -295,8 +295,9 @@ function renderCases() {
   container.innerHTML = casesData.map(c => `
     <div class="case-card">
       <div class="case-title">${c.title}</div>
-      <div class="case-target">${c.target} • <span style="color:var(--acid)">${c.bounty}</span></div>
+      <div class="case-target">${c.target} | <span style="color:var(--acid)">${c.bounty}</span></div>
       <div class="case-steps" style="white-space:pre-line">${c.body}</div>
+      ${c.link ? `<a href="${c.link}" target="_blank" class="case-link">Read Full Writeup &rarr;</a>` : ''}
     </div>
   `).join('');
 }
@@ -449,6 +450,7 @@ Report generated via bugbOS v3.0
   `.trim();
 
   document.getElementById('report-output').textContent = report;
+  document.getElementById('btn-export-pdf').style.display = 'inline-block';
   toast('Report generated! 📋', 'success');
 }
 
@@ -706,7 +708,25 @@ function showView(viewId) {
   if (viewId === 'animations') renderAnimList();
   if (viewId === 'export') renderAutoSaveInfo();
   // Update page title
-  const titles = { dashboard:'Dashboard', tracker:'Bug Tracker', kanban:'Kanban Board', targets:'Target Intelligence', ai:'AI Investigator', analytics:'Analytics', focus:'Focus Timer', export:'Export & Backup', mindset:'Mindset', recon:'Recon Mastery', vulns:'Vulnerability Atlas', animations:'Attack Animations', tools:'Tool Arsenal', cases:'Case Studies', payloads:'Payload Arsenal', notes:'My Notes', reports:'Report Builder' };
+  const titles = { 
+    dashboard:'Dashboard', 
+    tracker:'Bug Tracker', 
+    kanban:'Kanban Board', 
+    targets:'Target Intelligence', 
+    ai:'AI Investigator', 
+    analytics:'Analytics', 
+    focus:'Focus Timer', 
+    export:'Export & Backup', 
+    mindset:'Mindset & Strategy', 
+    recon:'Recon Mastery', 
+    vulns:'Vulnerability Atlas', 
+    animations:'Attack Animations', 
+    tools:'Tool Arsenal', 
+    casestudies:'Case Studies', 
+    payloads:'Payload Arsenal', 
+    notes:'My Notes', 
+    reports:'Report Builder' 
+  };
   const el = document.getElementById('page-title');
   if (el && titles[viewId]) el.textContent = titles[viewId];
 }
