@@ -414,6 +414,20 @@
           <textarea id="td-notes" class="q-input" style="height:200px" placeholder="General scope, exclusions, bounty table..."></textarea>
           <button class="btn-primary btn-sm" style="margin-top:10px" onclick="saveTargetNotes()">Save Notes</button>
         </div>
+        
+        <!-- NEW: Subdomain Intelligence -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="ph-dot"></div>
+            Subdomain Intelligence (<span id="td-sub-count">0</span>)
+          </div>
+          <div class="subdomain-manager">
+            <textarea id="td-sub-input" class="q-input" style="height:80px" placeholder="Paste subdomains (one per line)..."></textarea>
+            <button class="btn-acid btn-sm" style="margin-top:8px; width:100%" onclick="addSubdomains()">+ Add Subdomains</button>
+            <div id="td-sub-list" class="subdomain-list" style="margin-top:15px; max-height:150px; overflow-y:auto"></div>
+          </div>
+        </div>
+
         <div class="panel">
           <div class="panel-header"><div class="ph-dot"></div>Recon Checklist</div>
           <ul class="checklist-items" id="td-checklist"></ul>
@@ -422,17 +436,20 @@
             <button class="btn-acid" onclick="addTargetChecklistItem()">Add</button>
           </div>
         </div>
-        <div class="panel full-width tools-panel">
+
+        <div class="panel tools-panel">
           <div class="panel-header"><div class="ph-dot"></div>Tool Logs & Outputs</div>
           <div class="tools-form">
             <input type="text" id="td-tool-name" class="q-input" placeholder="Tool (e.g. Nuclei)">
             <textarea id="td-tool-out" class="q-input" style="height:120px" placeholder="Paste findings here..."></textarea>
             <button class="btn-primary" onclick="addTargetToolLog()">Log Result</button>
           </div>
-          <table class="tools-table">
-            <thead><tr><th>Tool</th><th>Findings</th><th>Date</th><th>Actions</th></tr></thead>
-            <tbody id="td-tools-log"></tbody>
-          </table>
+          <div style="max-height:300px; overflow-y:auto">
+            <table class="tools-table">
+              <thead><tr><th>Tool</th><th>Findings</th><th>Date</th><th>Actions</th></tr></thead>
+              <tbody id="td-tools-log"></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </section>

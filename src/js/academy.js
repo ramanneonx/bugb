@@ -609,13 +609,61 @@ function viewTarget(id) {
   const t = targets.find(t => t.id === id);
   if (!t) return;
   
+  // Ensure arrays exist
+  if (!t.logs) t.logs = [];
+  if (!t.subdomains) t.subdomains = [];
+
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('view-target-detail').classList.add('active');
   
   document.getElementById('td-name').textContent = t.name;
   document.getElementById('td-notes').value = t.notes || '';
+  
   renderTargetChecklist(t);
   renderTargetLogs(t);
+  renderSubdomains(t);
+}
+
+function renderSubdomains(t) {
+  const list = document.getElementById('td-sub-list');
+  const count = document.getElementById('td-sub-count');
+  if (!list || !count) return;
+
+  count.textContent = t.subdomains.length;
+  list.innerHTML = t.subdomains.map((s, i) => `
+    <div class="subdomain-item">
+      <span>${s}</span>
+      <button class="btn-ghost btn-sm" onclick="deleteSubdomain(${i})" style="padding:0 5px; color:var(--red)">✕</button>
+    </div>
+  `).join('') || '<div class="muted small" style="text-align:center; padding:10px">No subdomains added</div>';
+}
+
+function addSubdomains() {
+  const input = document.getElementById('td-sub-input');
+  const val = input.value.trim();
+  if (!val) return;
+
+  const t = targets.find(t => t.id === currentTargetId);
+  if (!t) return;
+
+  const newSubs = val.split(/[\n, ]+/).filter(s => s.trim().length > 0);
+  if (!t.subdomains) t.subdomains = [];
+  
+  const uniqueSubs = newSubs.filter(s => !t.subdomains.includes(s));
+  t.subdomains.push(...uniqueSubs);
+  
+  saveTargets();
+  input.value = '';
+  renderSubdomains(t);
+  toast(`Added ${uniqueSubs.length} subdomains`, 'success');
+}
+
+function deleteSubdomain(idx) {
+  const t = targets.find(t => t.id === currentTargetId);
+  if (!t) return;
+  t.subdomains.splice(idx, 1);
+  saveTargets();
+  renderSubdomains(t);
 }
 
 function renderTargetChecklist(t) {
