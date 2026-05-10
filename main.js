@@ -84,6 +84,15 @@ try {
 
 ipcMain.handle('auth-gdrive', async (event) => {
   return new Promise((resolve) => {
+    if (!GOOGLE_CONFIG.CLIENT_ID || !GOOGLE_CONFIG.CLIENT_SECRET) {
+      dialog.showErrorBox(
+        'Google Drive Sync Error',
+        'Google OAuth Credentials are missing.\nPlease ensure gdrive-config.json is present in the app directory or provide your own API keys.'
+      );
+      resolve(null);
+      return;
+    }
+
     // For Desktop Apps, Google requires using the System Browser + Local HTTP Server
     const PORT = 31337;
     const REDIRECT_URI = `http://localhost:${PORT}`;
