@@ -37,11 +37,11 @@ function buildKanbanCard(b) {
       ondragstart="dragBug(event, ${b.id})"
       onclick="showKanbanDetail(${b.id})">
       <div class="kanban-sev" style="background:${sevColors[b.severity] || 'var(--border)'}22; color:${sevColors[b.severity] || 'var(--text-secondary)'}; border-left:3px solid ${sevColors[b.severity] || 'var(--border)'}">
-        ${b.severity}
+        ${escapeHTML(b.severity)}
       </div>
-      <div class="kanban-title">${b.title}</div>
+      <div class="kanban-title">${escapeHTML(b.title)}</div>
       <div class="kanban-meta">
-        <span>${b.target}</span>
+        <span>${escapeHTML(b.target)}</span>
         ${b.bounty ? `<span style="color:var(--acid)">$${b.bounty}</span>` : ''}
       </div>
     </div>
@@ -65,7 +65,7 @@ function dropBug(event, newStatus) {
   
   const oldStatus = bug.status;
   bug.status = newStatus;
-  localStorage.setItem('bb_bugs', JSON.stringify(bugs));
+  saveBugs();
   renderKanban();
   updateStats();
   logActivity(`Bug moved: "${bug.title}" → ${newStatus}`, 'info');
@@ -97,7 +97,7 @@ function deleteKanbanBug() {
   const id = parseInt(document.getElementById('kd-bug-id').value);
   if (!confirm('Delete this bug?')) return;
   bugs = bugs.filter(b => b.id !== id);
-  localStorage.setItem('bb_bugs', JSON.stringify(bugs));
+  saveBugs();
   closeModal('modal-kd');
   renderKanban();
   updateStats();
@@ -110,7 +110,7 @@ function editKanbanBugStatus(newStatus) {
   const bug = bugs.find(b => b.id === id);
   if (!bug) return;
   bug.status = newStatus;
-  localStorage.setItem('bb_bugs', JSON.stringify(bugs));
+  saveBugs();
   closeModal('modal-kd');
   renderKanban();
   updateStats();

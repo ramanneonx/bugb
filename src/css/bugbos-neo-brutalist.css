@@ -1,0 +1,416 @@
+/* ============================================
+   bugbOS Neo-Brutalist Theme
+   Apply via: body[data-theme="neo-brutalist"]
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@800&display=swap');
+
+/* Fallback: Cabinet Grotesk via CDN */
+@import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,700,400&f[]=satoshi@500,700&display=swap');
+
+/* ── CSS Variable Overrides ── */
+body[data-theme="neo-brutalist"] {
+  --nb-yellow:   #ffe17c;
+  --nb-ink:      #000000;
+  --nb-paper:    #ffffff;
+  --nb-shadow:   #000000;
+}
+
+body[data-theme="neo-brutalist"][data-mode="dark"] {
+  --nb-yellow:   #25241e;
+  --nb-ink:      #ffe17c;
+  --nb-paper:    #121212;
+  --nb-shadow:   #ffe17c;
+}
+
+body[data-theme="neo-brutalist"] {
+  --nb-shadow-sm: 4px 4px 0px 0px var(--nb-shadow);
+  --nb-shadow-md: 6px 6px 0px 0px var(--nb-shadow);
+  --nb-shadow-lg: 8px 8px 0px 0px var(--nb-shadow);
+  --nb-border:   2px solid var(--nb-ink);
+  --nb-radius:   0px;
+
+  /* Override theme vars */
+  --bg-void:      var(--nb-yellow);
+  --bg-base:      var(--nb-paper);
+  --bg-surface:   var(--nb-paper);
+  --bg-elevated:  var(--nb-paper);
+  --bg-glass:     rgba(255,225,124,0.08);
+  --bg-glass-md:  rgba(255,225,124,0.15);
+  --acid:         var(--nb-yellow);
+  --acid-dim:     rgba(255,225,124,0.2);
+  --acid-glow:    rgba(255,225,124,0.4);
+  --text-primary:   var(--nb-ink);
+  --text-secondary: var(--nb-ink);
+  --text-tertiary:  var(--nb-ink);
+  --text-accent:    var(--nb-ink);
+  --border:       var(--nb-ink);
+  --border-md:    var(--nb-ink);
+  --border-acid:  var(--nb-ink);
+  --shadow-xs:    var(--nb-shadow-sm);
+  --shadow-sm:    var(--nb-shadow-sm);
+  --shadow-md:    var(--nb-shadow-md);
+  --shadow-lg:    var(--nb-shadow-lg);
+  --r-xs: 4px; --r-sm: 6px; --r-md: 8px; --r-lg: 10px; --r-xl: 12px;
+  --font-ui:      'Satoshi', 'Plus Jakarta Sans', sans-serif;
+  --font-display: 'Cabinet Grotesk', 'Syne', sans-serif;
+  --menu-bg:      var(--nb-paper);
+  --tab-bg:       transparent;
+
+  font-family: 'Satoshi', 'Plus Jakarta Sans', sans-serif;
+  background: var(--nb-yellow);
+  color: var(--nb-ink);
+}
+
+body[data-theme="neo-brutalist"][data-mode="dark"] {
+  --bg-void: var(--nb-paper);
+  background: var(--nb-paper);
+}
+
+
+/* ── Dot Pattern Mixin ── */
+body[data-theme="neo-brutalist"] .nb-dot-bg,
+body[data-theme="neo-brutalist"] .hero-banner,
+body[data-theme="neo-brutalist"] .views-container {
+  background-image: radial-gradient(var(--nb-ink) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-color: var(--nb-yellow);
+}
+
+/* ── Sidebar ── */
+body[data-theme="neo-brutalist"] .sidebar {
+  background: var(--nb-paper);
+  border-right: var(--nb-border);
+  border-right-width: 2px;
+}
+
+body[data-theme="neo-brutalist"] .sidebar::after { display: none; }
+
+body[data-theme="neo-brutalist"] .sidebar-brand {
+  background: var(--nb-yellow);
+  border-bottom: var(--nb-border);
+}
+
+body[data-theme="neo-brutalist"] .brand-logo {
+  background: var(--nb-ink);
+  border: 2px solid var(--nb-ink);
+  border-radius: 4px;
+  box-shadow: 2px 2px 0 var(--nb-ink);
+}
+
+body[data-theme="neo-brutalist"] .brand-text-os {
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: var(--nb-ink);
+  color: var(--nb-ink);
+  font-family: 'Cabinet Grotesk', 'Syne', sans-serif;
+  font-weight: 800;
+}
+
+body[data-theme="neo-brutalist"] .brand-text-sub { color: var(--nb-ink); opacity: 0.7; }
+
+body[data-theme="neo-brutalist"] .nav-section {
+  color: var(--nb-ink);
+  opacity: 0.6;
+  letter-spacing: 2px;
+}
+
+body[data-theme="neo-brutalist"] .nav-item {
+  color: var(--nb-ink);
+  opacity: 0.8;
+  border-radius: 4px;
+}
+
+body[data-theme="neo-brutalist"] .nav-item::before { display: none; }
+
+body[data-theme="neo-brutalist"] .nav-item:hover {
+  background: rgba(255,225,124,0.12);
+  color: #ffe17c;
+  transform: translateX(0);
+  border: 1px solid rgba(255,225,124,0.3);
+}
+
+body[data-theme="neo-brutalist"] .nav-item.active {
+  background: #ffe17c;
+  color: var(--nb-ink);
+  border: 2px solid var(--nb-ink);
+  border-left-width: 2px;
+  box-shadow: 3px 3px 0 var(--nb-ink);
+  font-weight: 700;
+}
+
+body[data-theme="neo-brutalist"] .nav-badge.acid {
+  background: var(--nb-ink);
+  color: #ffe17c;
+  border: 1px solid #ffe17c;
+}
+
+body[data-theme="neo-brutalist"] .sidebar-footer {
+  border-top: var(--nb-border);
+  background: var(--nb-paper);
+}
+
+body[data-theme="neo-brutalist"] .xp-level-badge {
+  background: #ffe17c;
+  color: var(--nb-ink);
+  border: 1px solid var(--nb-ink);
+}
+
+body[data-theme="neo-brutalist"] .xp-fill {
+  background: linear-gradient(90deg, #ffe17c, #b7c6c2);
+  box-shadow: none;
+}
+
+body[data-theme="neo-brutalist"] .streak-fire { color: #ffbc2e; }
+body[data-theme="neo-brutalist"] .streak-bar { color: #b7c6c2; }
+
+/* ── Topbar ── */
+body[data-theme="neo-brutalist"] .topbar {
+  background: #ffe17c;
+  border-bottom: 2px solid var(--nb-ink);
+  backdrop-filter: none;
+}
+
+body[data-theme="neo-brutalist"] .page-title {
+  font-family: 'Cabinet Grotesk', 'Syne', sans-serif;
+  font-weight: 800;
+  color: var(--nb-ink);
+  font-size: 1.1rem;
+}
+
+body[data-theme="neo-brutalist"] .topbar-chip {
+  background: var(--nb-paper);
+  border: 2px solid var(--nb-ink);
+  border-radius: 6px;
+  color: var(--nb-ink);
+  box-shadow: 2px 2px 0 var(--nb-ink);
+  font-family: 'Satoshi', sans-serif;
+}
+
+body[data-theme="neo-brutalist"] .topbar-chip:hover {
+  background: var(--nb-paper);
+  color: #ffe17c;
+  border-color: var(--nb-ink);
+  box-shadow: none;
+  transform: translate(2px, 2px);
+}
+
+body[data-theme="neo-brutalist"] .topbar-chip .chip-dot {
+  background: var(--nb-ink);
+  box-shadow: none;
+}
+
+body[data-theme="neo-brutalist"] .menu-btn {
+  background: var(--nb-paper);
+  border: 2px solid var(--nb-ink);
+  border-radius: 6px;
+  color: var(--nb-ink);
+  box-shadow: 2px 2px 0 var(--nb-ink);
+}
+
+body[data-theme="neo-brutalist"] .menu-btn:hover {
+  background: var(--nb-ink);
+  color: #ffe17c;
+  box-shadow: none;
+  transform: translate(2px, 2px);
+}
+
+body[data-theme="neo-brutalist"] .win-btn { color: var(--nb-ink); border-radius: 4px; }
+body[data-theme="neo-brutalist"] .win-btn:hover { background: rgba(0,0,0,0.1); color: var(--nb-ink); }
+body[data-theme="neo-brutalist"] .win-close:hover { background: #e63946; color: var(--nb-paper); }
+
+/* ── Main Area & Views ── */
+body[data-theme="neo-brutalist"] .main-area { background: #ffe17c; }
+
+body[data-theme="neo-brutalist"] .views-container {
+  background-image: radial-gradient(rgba(0,0,0,0.1) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-color: #ffe17c;
+}
+
+/* ── Panels ── */
+body[data-theme="neo-brutalist"] .panel {
+  background: var(--nb-paper);
+  border: 2px solid var(--nb-ink);
+  border-radius: 10px;
+  box-shadow: 6px 6px 0 var(--nb-ink);
+}
+
+body[data-theme="neo-brutalist"] .panel:hover {
+  box-shadow: 8px 8px 0 var(--nb-ink);
+  border-color: var(--nb-ink);
+  transform: translate(-2px, -2px);
+}
+
+body[data-theme="neo-brutalist"] .panel-header {
+  color: var(--nb-paper);
+  font-family: 'Cabinet Grotesk', 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+body[data-theme="neo-brutalist"] .panel-header .ph-dot {
+  background: var(--nb-ink);
+  box-shadow: none;
+}
+
+/* ── Buttons ── */
+body[data-theme="neo-brutalist"] .btn-primary {
+  background: var(--nb-ink);
+  color: #ffe17c;
+  border: 2px solid var(--nb-ink);
+  border-radius: 8px;
+  box-shadow: 4px 4px 0 var(--nb-ink);
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 700;
+  transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+body[data-theme="neo-brutalist"] .btn-primary:hover {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+  background: var(--nb-paper);
+}
+
+body[data-theme="neo-brutalist"] .btn-ghost {
+  background: var(--nb-paper);
+  border: 2px solid var(--nb-ink);
+  color: var(--nb-ink);
+  border-radius: 8px;
+  box-shadow: 4px 4px 0 var(--nb-ink);
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 600;
+}
+
+body[data-theme="neo-brutalist"] .btn-ghost:hover {
+  background: #ffe17c;
+  color: var(--nb-ink);
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+body[data-theme="neo-brutalist"] .btn-acid {
+  background: #ffe17c;
+  border: 2px solid var(--nb-ink);
+  color: var(--nb-ink);
+  border-radius: 8px;
+  box-shadow: 4px 4px 0 var(--nb-ink);
+  font-weight: 700;
+}
+
+body[data-theme="neo-brutalist"] .btn-acid:hover {
+  background: var(--nb-ink);
+  color: #ffe17c;
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+body[data-theme="neo-brutalist"] .btn-danger {
+  background: var(--nb-paper);
+  border: 2px solid #e63946;
+  color: #e63946;
+  border-radius: 8px;
+  box-shadow: 4px 4px 0 #e63946;
+}
+
+body[data-theme="neo-brutalist"] .btn-danger:hover {
+  background: #e63946;
+  color: var(--nb-paper);
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+body[data-theme="neo-brutalist"] .btn-sm {
+  box-shadow: 2px 2px 0 var(--nb-ink);
+}
+
+body[data-theme="neo-brutalist"] .btn-sm:hover {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+
+/* ── Inputs ── */
+body[data-theme="neo-brutalist"] input,
+body[data-theme="neo-brutalist"] textarea,
+body[data-theme="neo-brutalist"] select {
+  background: var(--nb-paper);
+  border: 2px solid var(--nb-ink);
+  color: var(--nb-ink);
+  border-radius: 8px;
+  font-family: 'Satoshi', sans-serif;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 14px;
+}
+
+body[data-theme="neo-brutalist"] input:focus,
+body[data-theme="neo-brutalist"] textarea:focus,
+body[data-theme="neo-brutalist"] select:focus {
+  border-color: var(--nb-ink);
+  box-shadow: 4px 4px 0 var(--nb-ink);
+  background: #fffde7;
+}
+
+body[data-theme="neo-brutalist"] input::placeholder,
+body[data-theme="neo-brutalist"] textarea::placeholder { color: #6b7c78; }
+
+body[data-theme="neo-brutalist"] select option { background: var(--nb-paper); color: var(--nb-ink); }
+
+/* ── Tags & Badges ── */
+body[data-theme="neo-brutalist"] .tag { border-radius: 20px; border-width: 2px; }
+body[data-theme="neo-brutalist"] .tag-acid { background: #ffe17c; color: var(--nb-ink); border-color: var(--nb-ink); }
+body[data-theme="neo-brutalist"] .tag-cyan { background: #b7c6c2; color: var(--nb-ink); border-color: var(--nb-ink); }
+body[data-theme="neo-brutalist"] .tag-amber { background: #ffbc2e; color: var(--nb-ink); border-color: var(--nb-ink); }
+body[data-theme="neo-brutalist"] .tag-red { background: #e63946; color: var(--nb-paper); border-color: var(--nb-ink); }
+body[data-theme="neo-brutalist"] .tag-purple { background: var(--nb-paper); color: #ffe17c; border-color: var(--nb-ink); }
+
+body[data-theme="neo-brutalist"] .sev-P1 { background: rgba(230,57,70,0.15); color: #e63946; border: 2px solid #e63946; }
+body[data-theme="neo-brutalist"] .sev-P2 { background: rgba(255,188,46,0.2); color: #c87800; border: 2px solid #c87800; }
+body[data-theme="neo-brutalist"] .sev-P3 { background: rgba(255,225,124,0.4); color: #7a6000; border: 2px solid #7a6000; }
+body[data-theme="neo-brutalist"] .sev-P4 { background: rgba(183,198,194,0.3); color: #2d3a35; border: 2px solid #2d3a35; }
+
+/* ── Toast ── */
+body[data-theme="neo-brutalist"] .toast {
+  border-radius: 10px;
+  border: 2px solid var(--nb-ink);
+  box-shadow: 4px 4px 0 var(--nb-ink);
+}
+body[data-theme="neo-brutalist"] .toast.success { background: #ffe17c; color: var(--nb-ink); border-color: var(--nb-ink); }
+body[data-theme="neo-brutalist"] .toast.error { background: #e63946; color: var(--nb-paper); border-color: var(--nb-ink); }
+body[data-theme="neo-brutalist"] .toast.info { background: #b7c6c2; color: var(--nb-ink); border-color: var(--nb-ink); }
+
+/* ── Modal ── */
+body[data-theme="neo-brutalist"] .modal {
+  background: var(--nb-paper);
+  border: 2px solid var(--nb-ink);
+  border-radius: 12px;
+  box-shadow: 10px 10px 0 var(--nb-ink);
+}
+
+body[data-theme="neo-brutalist"] .modal-header {
+  color: var(--nb-ink);
+  font-family: 'Cabinet Grotesk', 'Syne', sans-serif;
+  font-weight: 800;
+  border-bottom: 2px solid var(--nb-ink);
+}
+
+body[data-theme="neo-brutalist"] .modal-close:hover { background: #e63946; color: var(--nb-paper); border-radius: 4px; }
+body[data-theme="neo-brutalist"] .modal-actions { border-top: 2px solid var(--nb-ink); }
+
+/* ── Filter bar ── */
+body[data-theme="neo-brutalist"] .filter-btn {
+  background: var(--nb-paper);
+  border: 2px solid var(--nb-ink);
+  color: var(--nb-ink);
+  border-radius: 6px;
+  box-shadow: 2px 2px 0 var(--nb-ink);
+  font-weight: 700;
+}
+body[data-theme="neo-brutalist"] .filter-btn:hover,
+body[data-theme="neo-brutalist"] .filter-btn.active {
+  background: var(--nb-ink);
+  color: #ffe17c;
+  box-shadow: none;
+  transform: translate(2px, 2px);
+}

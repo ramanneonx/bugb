@@ -14,7 +14,12 @@ function autoSave() {
       notes: JSON.parse(localStorage.getItem('bb_notes') || '[]'),
       targets: JSON.parse(localStorage.getItem('bb_targets') || '[]'),
       activity: JSON.parse(localStorage.getItem('bb_activity') || '[]'),
-      sessions: JSON.parse(localStorage.getItem('bb_sessions') || '[]')
+      sessions: JSON.parse(localStorage.getItem('bb_sessions') || '[]'),
+      customRecon: JSON.parse(localStorage.getItem('bb_custom_recon') || '{}'),
+      sessionPlanner: JSON.parse(localStorage.getItem('bb_session_planner') || '{}'),
+      userTools: JSON.parse(localStorage.getItem('bb_user_tools') || '[]'),
+      userPayloads: JSON.parse(localStorage.getItem('bb_user_payloads') || '[]'),
+      settings: JSON.parse(localStorage.getItem('bugbos_settings') || '{}')
     };
     localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(snapshot));
     localStorage.setItem('bb_autosave_time', new Date().toLocaleTimeString());
@@ -45,9 +50,33 @@ function recoverFromAutoSave() {
     if (data.notes) { notes = data.notes; localStorage.setItem('bb_notes', JSON.stringify(notes)); }
     if (data.targets) { targets = data.targets; localStorage.setItem('bb_targets', JSON.stringify(targets)); }
     if (data.activity) { activity = data.activity; localStorage.setItem('bb_activity', JSON.stringify(activity)); }
-    updateStats(); renderTargets(); renderNotes(); renderActivity(); renderKanban();
+    if (data.customRecon) { localStorage.setItem('bb_custom_recon', JSON.stringify(data.customRecon)); }
+    if (data.sessionPlanner) { localStorage.setItem('bb_session_planner', JSON.stringify(data.sessionPlanner)); }
+    if (data.userTools) { localStorage.setItem('bb_user_tools', JSON.stringify(data.userTools)); }
+    if (data.userPayloads) { localStorage.setItem('bb_user_payloads', JSON.stringify(data.userPayloads)); }
+    if (data.sessions) { localStorage.setItem('bb_sessions', JSON.stringify(data.sessions)); }
+    if (data.settings) { localStorage.setItem('bugbos_settings', JSON.stringify(data.settings)); }
+
+    // Apply settings dynamically (theme presets, modes, customizer configuration)
+    if (window.loadSettings) window.loadSettings();
+
+    // Refresh UI Components
+    if (window.updateStats) window.updateStats();
+    if (window.renderMindset) window.renderMindset();
+    if (window.renderRecon) window.renderRecon();
+    if (window.renderVulnIndex) window.renderVulnIndex();
+    if (window.renderTools) window.renderTools();
+    if (window.renderPayloads) window.renderPayloads();
+    if (window.renderTargets) window.renderTargets();
+    if (window.renderActivity) window.renderActivity();
+    if (window.buildAnalytics) window.buildAnalytics();
+    if (window.renderKanban) window.renderKanban();
+
     toast(`Auto-save from ${ts} restored ✅`, 'success');
-  } catch { toast('Auto-save file is corrupted', 'error'); }
+  } catch (err) {
+    console.error(err);
+    toast('Auto-save file is corrupted', 'error');
+  }
 }
 
 function getAutoSaveInfo() {

@@ -2,7 +2,6 @@ node_modules/
 userdata/
 bounty_workspace.db
 *.one
-*.txt
 *.pyc
 __pycache__/
 .env
@@ -10,3 +9,10 @@ __pycache__/
 dist/
 build/
 *.exe
+# Google OAuth credentials — NEVER commit this
+gdrive-config.json
+client_secret_*.json
+# Temp patch/fix scripts
+*.py
+# Desktop shortcuts
+*.lnk

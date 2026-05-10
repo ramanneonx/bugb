@@ -58,7 +58,7 @@ function renderTypeChart() {
     const pct = Math.round((count / total) * 100);
     return `
       <div class="bar-row">
-        <div class="bar-label"><span class="muted small">${type}</span></div>
+        <div class="bar-label"><span class="muted small">${escapeHTML(type)}</span></div>
         <div class="bar-track">
           <div class="bar-fill" style="width:${pct}%; background:${palette[i % palette.length]}"></div>
         </div>
@@ -156,7 +156,7 @@ function renderPlatformChart() {
     const pct = Math.round((count / total) * 100);
     return `
       <div class="bar-row">
-        <div class="bar-label"><span class="muted small">${platform}</span></div>
+        <div class="bar-label"><span class="muted small">${escapeHTML(platform)}</span></div>
         <div class="bar-track">
           <div class="bar-fill" style="width:${pct}%; background:${palette[i % palette.length]}"></div>
         </div>

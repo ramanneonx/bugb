@@ -5,7 +5,7 @@
 /* === SIDEBAR === */
 .sidebar {
   width: var(--sidebar-w);
-  background: var(--bg-surface);
+  background: var(--menu-bg);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -95,6 +95,7 @@
   font-size: 0.88rem;
   font-weight: 500;
   color: var(--text-secondary);
+  background: var(--tab-bg);
   transition: all var(--transition);
   text-decoration: none;
   margin-bottom: 1px;

@@ -36,6 +36,7 @@ function exportReport() {
 }
 
 // ── Full OS Backup as JSON ────────────────────────
+// ── Full OS Backup as JSON ────────────────────────
 function exportFullBackup() {
   const backup = {
     version: '3.0',
@@ -43,7 +44,13 @@ function exportFullBackup() {
     bugs,
     notes,
     targets,
-    activity
+    activity,
+    customRecon: JSON.parse(localStorage.getItem('bb_custom_recon') || '{}'),
+    sessionPlanner: JSON.parse(localStorage.getItem('bb_session_planner') || '{}'),
+    userTools: JSON.parse(localStorage.getItem('bb_user_tools') || '[]'),
+    userPayloads: JSON.parse(localStorage.getItem('bb_user_payloads') || '[]'),
+    sessions: JSON.parse(localStorage.getItem('bb_sessions') || '[]'),
+    settings: JSON.parse(localStorage.getItem('bugbos_settings') || '{}')
   };
   const json = JSON.stringify(backup, null, 2);
   downloadFile(`bugbos-backup-${Date.now()}.json`, json, 'application/json');
@@ -62,13 +69,32 @@ function importBackup(input) {
       if (data.notes) { notes = data.notes; localStorage.setItem('bb_notes', JSON.stringify(notes)); }
       if (data.targets) { targets = data.targets; localStorage.setItem('bb_targets', JSON.stringify(targets)); }
       if (data.activity) { activity = data.activity; localStorage.setItem('bb_activity', JSON.stringify(activity)); }
-      updateStats();
-      renderTargets();
-      renderNotes();
-      renderActivity();
+      if (data.customRecon) { localStorage.setItem('bb_custom_recon', JSON.stringify(data.customRecon)); }
+      if (data.sessionPlanner) { localStorage.setItem('bb_session_planner', JSON.stringify(data.sessionPlanner)); }
+      if (data.userTools) { localStorage.setItem('bb_user_tools', JSON.stringify(data.userTools)); }
+      if (data.userPayloads) { localStorage.setItem('bb_user_payloads', JSON.stringify(data.userPayloads)); }
+      if (data.sessions) { localStorage.setItem('bb_sessions', JSON.stringify(data.sessions)); }
+      if (data.settings) { localStorage.setItem('bugbos_settings', JSON.stringify(data.settings)); }
+
+      // Apply settings dynamically (theme presets, modes, customizer configuration)
+      if (window.loadSettings) window.loadSettings();
+
+      // Refresh UI Components
+      if (window.updateStats) window.updateStats();
+      if (window.renderMindset) window.renderMindset();
+      if (window.renderRecon) window.renderRecon();
+      if (window.renderVulnIndex) window.renderVulnIndex();
+      if (window.renderTools) window.renderTools();
+      if (window.renderPayloads) window.renderPayloads();
+      if (window.renderTargets) window.renderTargets();
+      if (window.renderActivity) window.renderActivity();
+      if (window.buildAnalytics) window.buildAnalytics();
+      if (window.renderKanban) window.renderKanban();
+
       logActivity('OS backup imported successfully', 'success');
       toast('Backup imported! Data restored ✅', 'success');
-    } catch {
+    } catch (err) {
+      console.error(err);
       toast('Invalid backup file', 'error');
     }
   };

@@ -1,0 +1,196 @@
+/* Hand-Drawn Theme — Part 3: All Components */
+
+/* ── Stats ── */
+body[data-theme="hand-drawn"] .stat-card {
+  background: var(--hd-paper);
+  border: 3px solid var(--hd-pencil);
+  border-radius: var(--hd-wobbly);
+  box-shadow: 4px 4px 0 var(--hd-shadow-c);
+}
+body[data-theme="hand-drawn"] .stat-card::before { display: none; }
+body[data-theme="hand-drawn"] .stat-card:hover { transform: rotate(-1deg) translateY(-2px); box-shadow: 6px 6px 0 var(--hd-shadow-c); }
+body[data-theme="hand-drawn"] .stat-value { font-family: 'Kalam', cursive; }
+body[data-theme="hand-drawn"] .stat-value.acid { color: var(--hd-red); }
+body[data-theme="hand-drawn"] .stat-value.amber { color: var(--amber); }
+body[data-theme="hand-drawn"] .stat-value.cyan { color: var(--hd-blue); }
+body[data-theme="hand-drawn"] .stat-value.purple { color: var(--hd-pencil); }
+body[data-theme="hand-drawn"] .stat-label { color: var(--hd-pencil); opacity: 0.7; font-family: 'Patrick Hand', cursive; text-transform: none; }
+
+/* ── Hero ── */
+body[data-theme="hand-drawn"] .hero-banner {
+  background: var(--hd-postit);
+  border: 3px solid var(--hd-pencil);
+  border-radius: var(--hd-wobbly-md);
+  box-shadow: 6px 6px 0 var(--hd-pencil);
+}
+body[data-theme="hand-drawn"] .hero-banner::before { display: none; }
+body[data-theme="hand-drawn"] .hero-title { font-family: 'Kalam', cursive; font-weight: 700; color: var(--hd-pencil); }
+body[data-theme="hand-drawn"] .hero-sub { color: var(--hd-pencil); opacity: 0.8; }
+body[data-theme="hand-drawn"] .rotating-ring { border: 3px dashed var(--hd-pencil); box-shadow: none; animation: none; }
+body[data-theme="hand-drawn"] .rotating-ring::after { border: 2px dashed var(--hd-red); animation: none; }
+
+/* ── View Headers ── */
+body[data-theme="hand-drawn"] .view-header h2 {
+  font-family: 'Kalam', cursive; font-weight: 700; color: var(--hd-pencil);
+  text-decoration: underline wavy var(--hd-red);
+  text-underline-offset: 6px;
+}
+
+/* ── Kanban ── */
+body[data-theme="hand-drawn"] .kanban-column {
+  background: var(--hd-paper);
+  border: 3px solid var(--hd-pencil);
+  border-radius: var(--hd-wobbly);
+  box-shadow: 4px 4px 0 var(--hd-shadow-c);
+}
+body[data-theme="hand-drawn"] .kanban-col-header {
+  background: var(--hd-postit);
+  color: var(--hd-pencil);
+  border-bottom: 3px solid var(--hd-pencil);
+  font-family: 'Kalam', cursive;
+  font-weight: 700;
+}
+body[data-theme="hand-drawn"] .kanban-card {
+  background: var(--hd-paper);
+  border: 2px solid var(--hd-pencil);
+  border-radius: var(--hd-wobbly-sm);
+  box-shadow: 3px 3px 0 var(--hd-shadow-c);
+  color: var(--hd-pencil);
+}
+body[data-theme="hand-drawn"] .kanban-card:hover { transform: rotate(1deg); box-shadow: 4px 4px 0 var(--hd-shadow-c); }
+
+/* ── Tool Cards ── */
+body[data-theme="hand-drawn"] .tool-card {
+  background: var(--hd-paper);
+  border: 3px solid var(--hd-pencil);
+  border-radius: var(--hd-wobbly);
+  box-shadow: 4px 4px 0 var(--hd-shadow-c);
+  border-left: 4px solid var(--hd-red);
+}
+body[data-theme="hand-drawn"] .tool-card:hover { transform: rotate(-0.5deg); box-shadow: 5px 5px 0 var(--hd-shadow-c); border-color: var(--hd-pencil); }
+body[data-theme="hand-drawn"] .tool-name { color: var(--hd-red); font-family: 'Kalam', cursive; font-weight: 700; }
+body[data-theme="hand-drawn"] .tool-desc { color: var(--hd-pencil); opacity: 0.8; }
+body[data-theme="hand-drawn"] .tool-cmd {
+  background: var(--hd-paper); color: var(--hd-pencil);
+  border: 2px dashed var(--hd-pencil); border-radius: 8px;
+  font-family: 'Patrick Hand', cursive;
+}
+
+/* ── Case Cards ── */
+body[data-theme="hand-drawn"] .case-card {
+  background: var(--hd-paper);
+  border: 3px solid var(--hd-pencil);
+  border-left: 4px solid var(--amber);
+  border-radius: var(--hd-wobbly-sm);
+  box-shadow: 4px 4px 0 var(--hd-shadow-c);
+}
+body[data-theme="hand-drawn"] .case-card:hover { transform: rotate(0.5deg); box-shadow: 5px 5px 0 var(--hd-shadow-c); }
+body[data-theme="hand-drawn"] .case-title { color: var(--amber); font-family: 'Kalam', cursive; font-weight: 700; }
+body[data-theme="hand-drawn"] .case-bounty { background: var(--hd-postit); border: 2px solid var(--hd-pencil); color: var(--hd-pencil); box-shadow: 2px 2px 0 var(--hd-pencil); }
+body[data-theme="hand-drawn"] .case-link { color: var(--hd-blue); border-color: var(--hd-blue); }
+body[data-theme="hand-drawn"] .case-link:hover { background: var(--hd-blue); color: #fff; }
+
+/* ── Study Cards ── */
+body[data-theme="hand-drawn"] .study-card {
+  background: var(--hd-paper);
+  border: 3px solid var(--hd-pencil);
+  border-radius: var(--hd-wobbly);
+  box-shadow: 4px 4px 0 var(--hd-shadow-c);
+}
+body[data-theme="hand-drawn"] .study-card:hover { transform: rotate(-1deg); box-shadow: 6px 6px 0 var(--hd-shadow-c); border-color: var(--hd-pencil); }
+body[data-theme="hand-drawn"] .sc-title { color: var(--hd-pencil); font-family: 'Kalam', cursive; }
+body[data-theme="hand-drawn"] .sc-body { color: var(--hd-pencil); opacity: 0.8; }
+body[data-theme="hand-drawn"] .sc-body code { background: var(--hd-paper); border: 1px dashed var(--hd-pencil); color: var(--hd-pencil); }
+
+/* ── Notes ── */
+body[data-theme="hand-drawn"] .note-card {
+  background: var(--hd-postit);
+  border: 3px solid var(--hd-pencil);
+  border-radius: var(--hd-wobbly);
+  box-shadow: 3px 3px 0 var(--hd-shadow-c);
+  transform: rotate(-0.5deg);
+}
+body[data-theme="hand-drawn"] .note-card:hover { transform: rotate(1deg) translateY(-3px); box-shadow: 5px 5px 0 var(--hd-shadow-c); border-color: var(--hd-pencil); }
+body[data-theme="hand-drawn"] .note-card-title { color: var(--hd-pencil); font-family: 'Kalam', cursive; }
+body[data-theme="hand-drawn"] .note-card-body { color: var(--hd-pencil); opacity: 0.8; }
+body[data-theme="hand-drawn"] .note-card-tag { background: var(--hd-red); color: #fff; border: 2px solid var(--hd-pencil); border-radius: 20px; }
+
+/* ── Tables ── */
+body[data-theme="hand-drawn"] .tools-table th {
+  background: var(--hd-postit); color: var(--hd-pencil);
+  border-bottom: 3px solid var(--hd-pencil);
+  font-family: 'Kalam', cursive; font-weight: 700;
+  text-transform: none;
+}
+body[data-theme="hand-drawn"] .tools-table td { color: var(--hd-pencil); border-bottom: 2px dashed var(--hd-pencil); }
+body[data-theme="hand-drawn"] .tools-table tr:hover td { background: var(--bg-glass); }
+
+/* ── Editor ── */
+body[data-theme="hand-drawn"] .editor-toolbar {
+  background: var(--hd-paper); border: 2px solid var(--hd-pencil);
+  border-radius: var(--hd-wobbly-md);
+}
+body[data-theme="hand-drawn"] .editor-btn { background: var(--hd-paper); border: 2px solid var(--hd-pencil); border-radius: 8px; color: var(--hd-pencil); box-shadow: 2px 2px 0 var(--hd-shadow-c); }
+body[data-theme="hand-drawn"] .editor-btn:hover { background: var(--hd-postit); box-shadow: none; transform: translate(1px,1px); }
+body[data-theme="hand-drawn"] .rich-editor { background: var(--hd-paper); border: 2px solid var(--hd-pencil); border-top: none; border-radius: var(--hd-wobbly); color: var(--hd-pencil); }
+body[data-theme="hand-drawn"] .notes-content-area { background: var(--hd-paper); border: 2px dashed var(--hd-pencil); color: var(--hd-pencil); }
+
+/* ── Vuln Atlas ── */
+body[data-theme="hand-drawn"] .vuln-index-item { color: var(--hd-pencil); border-radius: 8px; font-family: 'Patrick Hand', cursive; }
+body[data-theme="hand-drawn"] .vuln-index-item:hover { background: var(--hd-postit); color: var(--hd-pencil); }
+body[data-theme="hand-drawn"] .vuln-index-item.active { background: var(--hd-red); color: #fff; border: 2px solid var(--hd-pencil); box-shadow: 2px 2px 0 var(--hd-pencil); }
+body[data-theme="hand-drawn"] #vd-title { font-family: 'Kalam', cursive; font-weight: 700; color: var(--hd-pencil); }
+
+/* ── Recon ── */
+body[data-theme="hand-drawn"] .phase-block { background: var(--hd-paper); border: 3px solid var(--hd-pencil); border-radius: var(--hd-wobbly); box-shadow: 4px 4px 0 var(--hd-shadow-c); }
+body[data-theme="hand-drawn"] .phase-title { background: var(--hd-postit); border-bottom: 3px solid var(--hd-pencil); color: var(--hd-pencil); font-family: 'Kalam', cursive; font-weight: 700; }
+body[data-theme="hand-drawn"] .phase-item { background: var(--hd-paper); border: 2px dashed var(--hd-pencil); }
+body[data-theme="hand-drawn"] .phase-item:hover { border-style: solid; border-color: var(--hd-red); }
+body[data-theme="hand-drawn"] .phase-item-title { color: var(--hd-blue); font-family: 'Kalam', cursive; }
+body[data-theme="hand-drawn"] .phase-item-body { color: var(--hd-pencil); opacity: 0.8; font-family: 'Patrick Hand', cursive; }
+
+/* ── Attack Animations ── */
+body[data-theme="hand-drawn"] .anim-item { background: var(--hd-paper); border: 2px dashed var(--hd-pencil); color: var(--hd-pencil); border-radius: 8px; }
+body[data-theme="hand-drawn"] .anim-item:hover { border-style: solid; color: var(--hd-pencil); }
+body[data-theme="hand-drawn"] .anim-item.active { background: var(--hd-postit); border: 3px solid var(--hd-pencil); color: var(--hd-pencil); box-shadow: 2px 2px 0 var(--hd-pencil); }
+
+/* ── Pipeline ── */
+body[data-theme="hand-drawn"] .pipeline-col { background: var(--hd-paper); border: 3px solid var(--hd-pencil); border-radius: var(--hd-wobbly); }
+body[data-theme="hand-drawn"] .pipe-header { border-bottom: 3px solid var(--hd-pencil); font-family: 'Kalam', cursive; font-weight: 700; color: var(--hd-pencil); }
+body[data-theme="hand-drawn"] .pipe-header.found { background: var(--hd-paper); border: 2px dashed var(--hd-pencil); }
+body[data-theme="hand-drawn"] .pipe-header.reported { background: var(--hd-postit); }
+body[data-theme="hand-drawn"] .pipe-header.triaged { background: var(--hd-paper); border: 2px dashed var(--hd-pencil); }
+body[data-theme="hand-drawn"] .pipe-header.bounty { background: var(--hd-red); color: #fff; }
+
+/* ── Subdomains ── */
+body[data-theme="hand-drawn"] .subdomain-list { background: var(--hd-paper); border: 2px dashed var(--hd-pencil); }
+body[data-theme="hand-drawn"] .subdomain-item { background: var(--hd-paper); border: 2px solid var(--hd-pencil); border-left: 5px solid var(--hd-blue); }
+body[data-theme="hand-drawn"] .subdomain-item:hover { background: var(--hd-postit); }
+
+/* ── Search Results ── */
+body[data-theme="hand-drawn"] .result-item { background: var(--hd-paper); border: 2px solid var(--hd-pencil); color: var(--hd-pencil); box-shadow: 3px 3px 0 var(--hd-shadow-c); }
+body[data-theme="hand-drawn"] .result-item:hover { background: var(--hd-postit); transform: rotate(-0.5deg); }
+body[data-theme="hand-drawn"] .result-type { background: var(--hd-red); color: #fff; }
+
+/* ── Study Hero ── */
+body[data-theme="hand-drawn"] .study-hero h2 { font-family: 'Kalam', cursive; font-weight: 700; color: var(--hd-pencil); }
+body[data-theme="hand-drawn"] .study-hero p { color: var(--hd-pencil); opacity: 0.8; }
+body[data-theme="hand-drawn"] .sh-icon { animation: none; }
+
+/* ── Scrollbar ── */
+body[data-theme="hand-drawn"] ::-webkit-scrollbar-thumb { background: var(--hd-pencil); opacity: 0.4; }
+body[data-theme="hand-drawn"] ::-webkit-scrollbar-thumb:hover { background: var(--hd-pencil); opacity: 0.7; }
+
+/* ── Form Group Labels ── */
+body[data-theme="hand-drawn"] .form-group label {
+  font-family: 'Kalam', cursive; font-weight: 700;
+  color: var(--hd-pencil); text-transform: none; letter-spacing: 0;
+}
+
+/* ── Metric blocks (Analytics) ── */
+body[data-theme="hand-drawn"] .metric-block { background: var(--hd-paper); border: 2px solid var(--hd-pencil); border-radius: var(--hd-wobbly-sm); }
+body[data-theme="hand-drawn"] .metric-val { font-family: 'Kalam', cursive; text-shadow: none; }
+body[data-theme="hand-drawn"] .metric-val.acid { color: var(--hd-red); }
+body[data-theme="hand-drawn"] .metric-label { font-family: 'Patrick Hand', cursive; text-transform: none; }
+body[data-theme="hand-drawn"] .bar-fill { border-radius: 20px; }
+body[data-theme="hand-drawn"] .timeline-bar { background: var(--hd-red); border-radius: 8px 8px 0 0; box-shadow: none; }

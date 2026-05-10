@@ -4,5 +4,10 @@ contextBridge.exposeInMainWorld('api', {
     exportToPDF: (htmlContent, fileName) => ipcRenderer.invoke('export-pdf', { htmlContent, fileName }),
     minimize: () => ipcRenderer.send('window-minimize'),
     maximize: () => ipcRenderer.send('window-maximize'),
-    close: () => ipcRenderer.send('window-close')
+    close: () => ipcRenderer.send('window-close'),
+    saveFile: (fileName, base64Data) => ipcRenderer.invoke('save-file', { fileName, base64Data }),
+    openPath: (filePath) => ipcRenderer.invoke('open-path', filePath),
+    openExternal: (url) => ipcRenderer.invoke('open-external', url),
+    authGDrive: () => ipcRenderer.invoke('auth-gdrive'),
+    refreshGDriveToken: (refreshToken) => ipcRenderer.invoke('refresh-gdrive-token', refreshToken)
 });

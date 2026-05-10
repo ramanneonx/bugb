@@ -1,0 +1,205 @@
+/* ── Stats & Dashboard ── */
+body[data-theme="neo-brutalist"] .stat-card {
+  background: var(--nb-paper);
+  border: 2px solid var(--nb-ink);
+  border-radius: 10px;
+  box-shadow: 6px 6px 0 var(--nb-shadow);
+}
+body[data-theme="neo-brutalist"] .stat-card::before { display: none; }
+body[data-theme="neo-brutalist"] .stat-card:hover { transform: translate(-2px,-2px); box-shadow: 8px 8px 0 var(--nb-shadow); }
+body[data-theme="neo-brutalist"] .stat-value.acid { color: var(--nb-ink); }
+body[data-theme="neo-brutalist"] .stat-value.cyan { color: var(--nb-ink); }
+body[data-theme="neo-brutalist"] .stat-value.amber { color: var(--nb-ink); }
+body[data-theme="neo-brutalist"] .stat-value.purple { color: var(--nb-ink); }
+body[data-theme="neo-brutalist"] .stat-label { color: var(--nb-ink); opacity: 0.8; }
+
+body[data-theme="neo-brutalist"] .hero-banner {
+  background-color: var(--nb-paper);
+  background-image: none;
+  border: 2px solid var(--nb-ink);
+  border-radius: 12px;
+  box-shadow: 8px 8px 0 var(--nb-shadow);
+}
+body[data-theme="neo-brutalist"] .hero-banner::before { display: none; }
+body[data-theme="neo-brutalist"] .hero-title { color: var(--nb-ink); font-family: 'Cabinet Grotesk','Syne',sans-serif; font-weight: 800; }
+body[data-theme="neo-brutalist"] .hero-sub { color: var(--nb-ink); }
+body[data-theme="neo-brutalist"] .rotating-ring { border-color: var(--nb-ink); box-shadow: none; }
+body[data-theme="neo-brutalist"] .rotating-ring::after { border-color: var(--nb-ink); border-bottom-color: transparent; opacity: 0.5; }
+
+/* ── View Headers ── */
+body[data-theme="neo-brutalist"] .view-header h2 {
+  font-family: 'Cabinet Grotesk','Syne',sans-serif;
+  font-weight: 800;
+  color: var(--nb-ink);
+}
+
+/* ── Search Bar ── */
+body[data-theme="neo-brutalist"] .search-bar {
+  background: var(--nb-paper);
+  border: 2px solid var(--nb-ink);
+  border-radius: 8px;
+  box-shadow: 3px 3px 0 var(--nb-shadow);
+}
+body[data-theme="neo-brutalist"] .search-bar:focus-within { box-shadow: 4px 4px 0 var(--nb-shadow); }
+body[data-theme="neo-brutalist"] .search-bar input { background: none; color: var(--nb-ink); }
+body[data-theme="neo-brutalist"] .search-bar .search-icon { color: var(--nb-ink); }
+
+/* ── Kanban ── */
+body[data-theme="neo-brutalist"] .kanban-column {
+  background: var(--nb-paper);
+  border: 2px solid var(--nb-ink);
+  border-radius: 10px;
+  box-shadow: 5px 5px 0 var(--nb-shadow);
+}
+body[data-theme="neo-brutalist"] .kanban-col-header {
+  background: var(--nb-yellow);
+  color: var(--nb-ink);
+  border-bottom: 2px solid var(--nb-ink);
+  border-radius: 8px 8px 0 0;
+  font-family: 'Cabinet Grotesk','Syne',sans-serif;
+  font-weight: 800;
+}
+body[data-theme="neo-brutalist"] .kanban-card {
+  background: var(--nb-paper);
+  border: 2px solid var(--nb-ink);
+  border-radius: 8px;
+  box-shadow: 3px 3px 0 var(--nb-shadow);
+  color: var(--nb-ink);
+  opacity: 0.95;
+}
+body[data-theme="neo-brutalist"] .kanban-card:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--nb-shadow); }
+
+/* ── Tools & Cards ── */
+body[data-theme="neo-brutalist"] .tool-card {
+  background: var(--nb-paper);
+  border: 2px solid var(--nb-ink);
+  border-radius: 8px;
+  box-shadow: 4px 4px 0 var(--nb-shadow);
+}
+body[data-theme="neo-brutalist"] .tool-card:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--nb-shadow); border-color: var(--nb-ink); }
+body[data-theme="neo-brutalist"] .tool-name { color: var(--nb-ink); font-family: 'Cabinet Grotesk','Syne',sans-serif; font-weight: 800; }
+body[data-theme="neo-brutalist"] .tool-desc { color: var(--nb-ink); opacity: 0.8; }
+body[data-theme="neo-brutalist"] .tool-cmd { background: var(--nb-yellow); color: var(--nb-ink); border: 1px solid var(--nb-ink); border-radius: 4px; }
+
+body[data-theme="neo-brutalist"] .case-card {
+  background: var(--nb-paper);
+  border: 2px solid var(--nb-ink);
+  border-radius: 8px;
+  box-shadow: 4px 4px 0 var(--nb-shadow);
+}
+body[data-theme="neo-brutalist"] .case-card:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--nb-shadow); }
+body[data-theme="neo-brutalist"] .case-title { color: var(--nb-ink); font-family: 'Cabinet Grotesk','Syne',sans-serif; font-weight: 800; }
+body[data-theme="neo-brutalist"] .case-target { color: var(--nb-ink); opacity: 0.7; }
+body[data-theme="neo-brutalist"] .case-bounty { background: var(--nb-yellow); border: 2px solid var(--nb-ink); color: var(--nb-ink); box-shadow: 2px 2px 0 var(--nb-shadow); }
+body[data-theme="neo-brutalist"] .case-link { color: var(--nb-ink); border-color: var(--nb-ink); }
+body[data-theme="neo-brutalist"] .case-link:hover { background: var(--nb-ink); color: var(--nb-yellow); }
+
+/* ── Study Cards ── */
+body[data-theme="neo-brutalist"] .study-card {
+  background: var(--nb-paper);
+  border: 2px solid var(--nb-ink);
+  border-radius: 8px;
+  box-shadow: 4px 4px 0 var(--nb-shadow);
+}
+body[data-theme="neo-brutalist"] .study-card:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--nb-shadow); border-color: var(--nb-ink); }
+body[data-theme="neo-brutalist"] .sc-title { color: var(--nb-ink); font-family: 'Cabinet Grotesk','Syne',sans-serif; }
+body[data-theme="neo-brutalist"] .sc-body { color: var(--nb-ink); opacity: 0.95; }
+body[data-theme="neo-brutalist"] .sc-tag { border: 2px solid var(--nb-ink); background: var(--nb-yellow); color: var(--nb-ink); }
+body[data-theme="neo-brutalist"] .sc-body code { background: var(--nb-yellow); color: var(--nb-ink); border-radius: 3px; }
+
+/* ── Notes ── */
+body[data-theme="neo-brutalist"] .note-card {
+  background: var(--nb-paper);
+  border: 2px solid var(--nb-ink);
+  border-radius: 8px;
+  box-shadow: 3px 3px 0 var(--nb-shadow);
+}
+body[data-theme="neo-brutalist"] .note-card:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--nb-shadow); border-color: var(--nb-ink); }
+body[data-theme="neo-brutalist"] .note-card-title { color: var(--nb-ink); }
+body[data-theme="neo-brutalist"] .note-card-body { color: var(--nb-ink); opacity: 0.8; }
+body[data-theme="neo-brutalist"] .note-card-tag { background: var(--nb-yellow); color: var(--nb-ink); border: 2px solid var(--nb-ink); border-radius: 20px; }
+
+/* ── Tables ── */
+body[data-theme="neo-brutalist"] .tools-table th {
+  background: var(--nb-yellow);
+  color: var(--nb-ink);
+  border-bottom: 2px solid var(--nb-ink);
+  font-family: 'Cabinet Grotesk','Syne',sans-serif;
+  font-weight: 800;
+}
+body[data-theme="neo-brutalist"] .tools-table td { color: var(--nb-ink); border-bottom: 1px solid var(--nb-ink); }
+body[data-theme="neo-brutalist"] .tools-table tr:hover td { background: var(--bg-glass); }
+
+/* ── Rich Editor ── */
+body[data-theme="neo-brutalist"] .editor-toolbar {
+  background: var(--nb-yellow);
+  border: 2px solid var(--nb-ink);
+  border-radius: 8px 8px 0 0;
+}
+body[data-theme="neo-brutalist"] .editor-btn {
+  background: var(--nb-paper);
+  border: 2px solid var(--nb-ink);
+  color: var(--nb-ink);
+  border-radius: 4px;
+  box-shadow: 2px 2px 0 var(--nb-shadow);
+}
+body[data-theme="neo-brutalist"] .editor-btn:hover { background: var(--nb-yellow); border-color: var(--nb-ink); color: var(--nb-ink); box-shadow: none; transform: translate(1px,1px); }
+body[data-theme="neo-brutalist"] .rich-editor {
+  background: var(--nb-paper);
+  border: 2px solid var(--nb-ink);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  color: var(--nb-ink);
+}
+body[data-theme="neo-brutalist"] .rich-editor:focus { box-shadow: 4px 4px 0 var(--nb-shadow); }
+body[data-theme="neo-brutalist"] .notes-content-area { background: var(--nb-paper); border: 2px solid var(--nb-ink); color: var(--nb-ink); }
+
+/* ── Vuln Atlas ── */
+body[data-theme="neo-brutalist"] .vuln-index-item { color: var(--nb-ink); border-radius: 6px; }
+body[data-theme="neo-brutalist"] .vuln-index-item:hover { background: var(--bg-glass-md); color: var(--nb-ink); transform: translateX(2px); }
+body[data-theme="neo-brutalist"] .vuln-index-item.active { background: var(--nb-yellow); border: 2px solid var(--nb-ink); color: var(--nb-ink); box-shadow: 2px 2px 0 var(--nb-shadow); }
+body[data-theme="neo-brutalist"] .vuln-detail-pane .panel { background: var(--nb-paper); }
+body[data-theme="neo-brutalist"] #vd-title { color: var(--nb-ink); font-family: 'Cabinet Grotesk','Syne',sans-serif; font-weight: 800; }
+
+/* ── Recon ── */
+body[data-theme="neo-brutalist"] .phase-block { background: var(--nb-paper); border: 2px solid var(--nb-ink); border-radius: 10px; box-shadow: 4px 4px 0 var(--nb-shadow); }
+body[data-theme="neo-brutalist"] .phase-title { background: var(--nb-yellow); border-bottom: 2px solid var(--nb-ink); color: var(--nb-ink); font-family: 'Cabinet Grotesk','Syne',sans-serif; font-weight: 800; }
+body[data-theme="neo-brutalist"] .phase-item { background: var(--nb-paper); border: 2px solid var(--nb-ink); }
+body[data-theme="neo-brutalist"] .phase-item:hover { border-color: var(--nb-ink); background: var(--bg-glass); }
+body[data-theme="neo-brutalist"] .phase-item-title { color: var(--nb-ink); }
+body[data-theme="neo-brutalist"] .phase-item-body { color: var(--nb-ink); opacity: 0.8; }
+
+/* ── Attack Animations ── */
+body[data-theme="neo-brutalist"] .anim-item { background: var(--nb-paper); border: 2px solid var(--nb-ink); color: var(--nb-ink); border-radius: 6px; }
+body[data-theme="neo-brutalist"] .anim-item:hover { border-color: var(--nb-ink); background: var(--bg-glass-md); }
+body[data-theme="neo-brutalist"] .anim-item.active { background: var(--nb-yellow); border: 2px solid var(--nb-ink); color: var(--nb-ink); box-shadow: 2px 2px 0 var(--nb-shadow); }
+
+/* ── Subdomain List ── */
+body[data-theme="neo-brutalist"] .subdomain-list { background: var(--nb-paper); border: 2px solid var(--nb-ink); }
+body[data-theme="neo-brutalist"] .subdomain-item { background: var(--nb-paper); border: 2px solid var(--nb-ink); border-left: 5px solid var(--nb-yellow); }
+body[data-theme="neo-brutalist"] .subdomain-item:hover { background: var(--nb-yellow); color: var(--nb-ink); }
+
+/* ── Search results ── */
+body[data-theme="neo-brutalist"] .result-item { background: var(--nb-paper); border: 2px solid var(--nb-ink); color: var(--nb-ink); box-shadow: 3px 3px 0 var(--nb-shadow); }
+body[data-theme="neo-brutalist"] .result-item:hover { background: var(--nb-yellow); transform: translateX(3px); box-shadow: 2px 2px 0 var(--nb-shadow); }
+body[data-theme="neo-brutalist"] .result-type { background: var(--nb-ink); color: var(--nb-yellow); border-radius: 10px; }
+
+/* ── Study Hero ── */
+body[data-theme="neo-brutalist"] .study-hero h2 { font-family: 'Cabinet Grotesk','Syne',sans-serif; font-weight: 800; color: var(--nb-ink); }
+body[data-theme="neo-brutalist"] .study-hero p { color: var(--nb-ink); opacity: 0.8; }
+body[data-theme="neo-brutalist"] .sh-icon { animation: none; }
+
+/* ── Pipeline (dashboard) ── */
+body[data-theme="neo-brutalist"] .pipeline-col { background: var(--nb-paper); border: 2px solid var(--nb-ink); border-radius: 8px; }
+body[data-theme="neo-brutalist"] .pipe-header { border-bottom: 2px solid var(--nb-ink); font-family: 'Cabinet Grotesk','Syne',sans-serif; font-weight: 800; color: var(--nb-ink); }
+body[data-theme="neo-brutalist"] .pipe-header.found { background: var(--nb-yellow); opacity: 0.9; }
+body[data-theme="neo-brutalist"] .pipe-header.reported { background: var(--nb-yellow); }
+body[data-theme="neo-brutalist"] .pipe-header.triaged { background: var(--nb-yellow); filter: brightness(0.9); }
+body[data-theme="neo-brutalist"] .pipe-header.bounty { background: var(--nb-ink); color: var(--nb-yellow); }
+
+/* ── Canvas Background ── */
+body[data-theme="neo-brutalist"] #bg-canvas { display: none; }
+
+/* ── Scrollbar ── */
+body[data-theme="neo-brutalist"] ::-webkit-scrollbar-thumb { background: var(--nb-ink); opacity: 0.3; }
+body[data-theme="neo-brutalist"] ::-webkit-scrollbar-thumb:hover { background: var(--nb-ink); opacity: 0.6; }

