@@ -142,6 +142,9 @@
       <div class="topbar-chip">🎯 <span id="stat-targets">0</span> targets</div>
       <div class="topbar-chip" id="autosave-status" style="color:var(--text-tertiary); font-size:0.7rem; cursor:pointer" onclick="showView('export')" title="Click to go to Export & Backup">💾 Auto-save on</div>
       
+      <!-- Manual Sync Button -->
+      <button class="btn-ghost btn-sm" onclick="if(window.silentSync) window.silentSync();" title="Force Cloud Sync" style="margin-right:8px; border-color:var(--acid); color:var(--acid)">🔄 Sync Now</button>
+      
       <!-- Theme Quick Toggle -->
       <button class="win-btn" onclick="quickToggleTheme()" title="Quick Theme Swap" style="margin-right:8px; background:rgba(0,229,255,0.1); border-color:var(--cyan); color:var(--cyan)">🌓</button>
       
@@ -372,7 +375,13 @@
               <div style="font-size:2rem; margin-bottom:10px">📂</div>
               <div style="font-weight:700; margin-bottom:5px">Restore Backup</div>
               <div class="muted small" style="margin-bottom:15px">Import a previously exported backup to restore all data</div>
-              <label class="btn-ghost" style="cursor:pointer">⬆ Import Backup <input type="file" accept=".json" hidden onchange="importBackup(this)"></label>
+              <label class="btn-ghost" style="cursor:pointer; display:inline-flex; width:100%; justify-content:center">⬆ Import Backup <input type="file" accept=".json" hidden onchange="importBackup(this)"></label>
+            </div>
+            <div style="background:var(--bg-glass); border:1px solid var(--border); border-radius:var(--r-sm); padding:20px; text-align:center">
+              <div style="font-size:2rem; margin-bottom:10px">☁️</div>
+              <div style="font-weight:700; margin-bottom:5px">Cloud Snapshots</div>
+              <div class="muted small" style="margin-bottom:15px">Restore from automatic Google Drive snapshots</div>
+              <button class="btn-ghost" style="width:100%; justify-content:center; color:var(--acid); border-color:var(--acid)" onclick="showCloudSnapshotsModal()">📥 View Cloud Snapshots</button>
             </div>
           </div>
         </div>
@@ -1678,6 +1687,20 @@
 .robot-enter { animation: robotIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 @keyframes robotIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 </style>
-
+<!-- Cloud Snapshots Modal -->
+<div id="modal-cloud-snapshots" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; justify-content:center; align-items:center;">
+  <div class="panel" style="width:500px; max-width:90%; border-color:var(--acid); background:var(--bg-panel); border-radius:var(--r-md); box-shadow:0 0 20px rgba(0,255,159,0.1)">
+    <div class="panel-header" style="color:var(--acid); justify-content:space-between">
+      <div style="display:flex; align-items:center; gap:8px"><div class="ph-dot" style="background:var(--acid)"></div>☁️ Cloud Snapshots</div>
+      <button class="btn-ghost btn-sm" onclick="document.getElementById('modal-cloud-snapshots').style.display='none'">✕</button>
+    </div>
+    <div style="padding:20px">
+      <p class="muted small" style="margin-bottom:15px">Select a past snapshot to restore your entire workspace. Warning: This will overwrite your current local data!</p>
+      <div id="cloud-snapshots-list" style="display:flex; flex-direction:column; gap:10px; max-height:300px; overflow-y:auto">
+        <div style="text-align:center; padding:20px" class="muted small">Loading snapshots from Google Drive...</div>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

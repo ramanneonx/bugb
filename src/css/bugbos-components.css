@@ -43,7 +43,7 @@
 .editor-btn{background:var(--bg-glass);border:1px solid var(--border);color:var(--text-secondary);padding:4px 10px;border-radius:var(--r-xs);cursor:pointer;font-size:.8rem;transition:all .2s;font-family:var(--font-ui)}
 .editor-btn:hover{background:var(--acid-dim);border-color:var(--border-acid);color:var(--acid)}
 .editor-divider{width:1px;height:20px;background:var(--border);margin:0 2px}
-.rich-editor{min-height:280px;max-height:500px;overflow-y:auto;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--r-sm) var(--r-sm);padding:16px;color:var(--text-primary);font-size:.9rem;line-height:1.7;outline:none}
+.rich-editor{min-height:280px;max-height:500px;overflow-y:auto;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--r-sm) var(--r-sm);padding:16px;color:var(--text-primary);font-size:.9rem;line-height:1.7;outline:none;-webkit-app-region:no-drag;-webkit-user-select:auto;user-select:auto}
 .rich-editor:focus{border-color:var(--acid);box-shadow:0 0 0 3px rgba(0,255,159,0.06)}
 .rich-editor[placeholder]:empty::before{content:attr(placeholder);color:var(--text-tertiary);pointer-events:none}
 .notes-content-area{min-height:120px;padding:16px;background:rgba(0,0,0,0.2);border:1px solid var(--border);border-radius:var(--r-sm);line-height:1.7;font-size:.88rem;color:var(--text-secondary)}

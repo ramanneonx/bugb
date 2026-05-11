@@ -432,6 +432,9 @@ input, textarea, select {
   width: 100%;
   outline: none;
   transition: all var(--transition);
+  -webkit-app-region: no-drag;
+  -webkit-user-select: auto;
+  user-select: auto;
 }
 
 input:focus, textarea:focus, select:focus {

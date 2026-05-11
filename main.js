@@ -227,7 +227,25 @@ ipcMain.on('window-maximize', (event) => {
 
 ipcMain.on('window-close', (event) => {
   const win = BrowserWindow.fromWebContents(event.sender);
+  if (!win) return;
+
+  win.webContents.send('force-sync-and-close');
+});
+
+ipcMain.on('confirm-close', (event) => {
+  const win = BrowserWindow.fromWebContents(event.sender);
   if (win) win.close();
+});
+
+ipcMain.handle('save-offline', async (event, data) => {
+  try {
+    const offlinePath = path.join(app.getPath('userData'), 'offline_vault.json');
+    fs.writeFileSync(offlinePath, data);
+    return offlinePath;
+  } catch (e) {
+    console.error('Failed to save offline backup:', e);
+    return null;
+  }
 });
 
 // === File System IPC for Recon Mastery ===

@@ -4,8 +4,8 @@
  */
 
 const SYNC_CONFIG = {
-    FILENAME: 'bugbos_quantum_vault.json',
-    INTERVAL: 60 * 60 * 1000 // 1 hour
+    FILENAME_PREFIX: 'bugbos_snapshot_',
+    INTERVAL: 10 * 60 * 1000 // 10 minutes
 };
 
 let gdriveAccessToken  = localStorage.getItem('bb_gdrive_token')   || null;
@@ -27,8 +27,8 @@ async function initSyncEngine() {
         gdriveAccessToken = newToken;
         updateSyncUI('CONNECTED');
         startSyncTimer();
-        // Reconcile in background — don't block UI
-        quantumReconcile().catch(console.error);
+        // Push in background — don't block UI
+        quantumPush().catch(console.error);
     } else {
         // Refresh token expired — user must re-sign in
         gdriveRefreshToken = null;
@@ -88,7 +88,7 @@ async function startCloudOnboarding() {
         toast('🛡️ Cloud Sentinel Active!', 'success');
 
         startSyncTimer();
-        await quantumReconcile(true);
+        await quantumPush(true);
 
     } catch (e) {
         console.error('[Sync] Onboarding failed:', e);
@@ -98,9 +98,9 @@ async function startCloudOnboarding() {
 }
 
 /* ──────────────────────────────────────────────────────
-   RECONCILIATION ENGINE (Last Write Wins)
+   PUSH ENGINE (One-way Snapshot)
 ────────────────────────────────────────────────────── */
-async function quantumReconcile(isFirstLogin = false) {
+async function quantumPush(isFirstLogin = false) {
     if (!gdriveAccessToken) return;
 
     updateSyncUI('SYNCING');
@@ -110,50 +110,16 @@ async function quantumReconcile(isFirstLogin = false) {
         const freshToken = await silentRefresh();
         if (freshToken) gdriveAccessToken = freshToken;
 
-        const fileId = await findCloudVault();
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const filename = `${SYNC_CONFIG.FILENAME_PREFIX}${timestamp}.json`;
 
-        if (!fileId) {
-            // No cloud backup yet — create one
-            await uploadToVault(getPackagedData());
-            updateSyncUI('CONNECTED');
-            return;
-        }
+        await uploadToVault(getPackagedData(), null, filename);
 
-        const cloudVault = await downloadFromVault(fileId);
-        if (!cloudVault || !cloudVault.lastSync) {
-            // Cloud file is corrupted/empty — overwrite
-            await uploadToVault(getPackagedData(), fileId);
-            updateSyncUI('CONNECTED');
-            return;
-        }
-
-        const cloudTime = cloudVault.lastSync;
-        const localTime = parseInt(localStorage.getItem('bb_last_sync') || '0');
-
-        // First login + empty local = restore from cloud
-        if (isFirstLogin && isLocalDataEmpty() && cloudVault.data) {
-            applyCloudData(cloudVault.data);
-            localStorage.setItem('bb_last_sync', String(cloudTime));
-            updateSyncUI('CONNECTED');
-            toast('📦 Workspace restored from cloud!', 'success');
-            setTimeout(() => location.reload(), 1800);
-            return;
-        }
-
-        if (cloudTime > localTime) {
-            // Cloud is newer — pull
-            applyCloudData(cloudVault.data);
-            localStorage.setItem('bb_last_sync', String(cloudTime));
-        } else {
-            // Local is newer (or equal) — push
-            await uploadToVault(getPackagedData(), fileId);
-            localStorage.setItem('bb_last_sync', String(Date.now()));
-        }
-
+        localStorage.setItem('bb_last_sync', String(Date.now()));
         updateSyncUI('CONNECTED');
 
     } catch (e) {
-        console.error('[Sync] Reconciliation error:', e);
+        console.error('[Sync] Push error:', e);
         updateSyncUI('ERROR');
     }
 }
@@ -165,15 +131,17 @@ function startSyncTimer() {
     if (syncTimerStarted) return;
     syncTimerStarted = true;
 
-    setInterval(() => quantumReconcile(), SYNC_CONFIG.INTERVAL);
+    setInterval(() => quantumPush(), SYNC_CONFIG.INTERVAL);
 
     // Debounced data-change trigger (called from academy.js onDataChange)
     window.triggerCloudSync = () => {
         clearTimeout(window._syncDebounce);
         window._syncDebounce = setTimeout(() => {
-            localStorage.setItem('bb_last_sync', String(Date.now()));
-            quantumReconcile().catch(console.error);
-        }, 12000); // 12s after last edit
+            // Save offline backup immediately
+            if (window.api && window.api.saveOffline) {
+                window.api.saveOffline(JSON.stringify(getPackagedData())).catch(e => console.error('Offline save error:', e));
+            }
+        }, 5000); // 5s after last edit
     };
 }
 
@@ -254,9 +222,9 @@ async function downloadFromVault(fileId) {
     return await res.json();
 }
 
-async function uploadToVault(content, fileId = null) {
+async function uploadToVault(content, fileId = null, filename = 'bugbos_snapshot.json') {
     const boundary = 'qsync_boundary_7f3a';
-    const metaJson  = JSON.stringify({ name: SYNC_CONFIG.FILENAME, parents: fileId ? undefined : ['appDataFolder'] });
+    const metaJson  = JSON.stringify({ name: filename, parents: fileId ? undefined : ['appDataFolder'] });
     const bodyJson  = JSON.stringify(content);
 
     const body = `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${metaJson}\r\n--${boundary}\r\nContent-Type: application/json\r\n\r\n${bodyJson}\r\n--${boundary}--`;
@@ -337,7 +305,136 @@ function disconnectGDrive() {
 }
 
 // Manual sync hook
-window.silentSync = () => quantumReconcile().catch(console.error);
+window.silentSync = () => quantumPush().catch(console.error);
+
+// Online reconnect sync
+window.addEventListener('online', () => {
+    toast('Connection restored. Syncing...', 'info');
+    quantumPush().catch(console.error);
+});
+
+// Intercept window close for sync
+if (window.api && window.api.onForceSyncAndClose) {
+    window.api.onForceSyncAndClose(async () => {
+        toast('Saving offline...', 'info');
+        if (window.api.saveOffline) {
+            await window.api.saveOffline(JSON.stringify(getPackagedData())).catch(e => console.error('Offline save error:', e));
+        }
+        if (gdriveAccessToken) {
+            toast('Syncing to cloud...', 'info');
+            // Fire and forget, but wait up to 2s
+            await Promise.race([
+                quantumPush(),
+                new Promise(r => setTimeout(r, 2000))
+            ]);
+        }
+        window.api.confirmClose();
+    });
+}
+
+/* ──────────────────────────────────────────────────────
+   SNAPSHOT RESTORE API
+────────────────────────────────────────────────────── */
+async function listCloudSnapshots() {
+    if (!gdriveAccessToken) return [];
+    try {
+        const freshToken = await silentRefresh();
+        if (freshToken) gdriveAccessToken = freshToken;
+
+        const q = encodeURIComponent(`name contains '${SYNC_CONFIG.FILENAME_PREFIX}' and trashed = false`);
+        const res = await fetch(
+            `https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=${q}&fields=files(id,name,createdTime)&orderBy=createdTime desc`,
+            { headers: { Authorization: 'Bearer ' + gdriveAccessToken } }
+        );
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        return data.files || [];
+    } catch (e) {
+        console.error('[Sync] Error listing snapshots:', e);
+        return [];
+    }
+}
+
+async function restoreSnapshot(fileId) {
+    if (!gdriveAccessToken || !fileId) return false;
+    updateSyncUI('SYNCING');
+    try {
+        const freshToken = await silentRefresh();
+        if (freshToken) gdriveAccessToken = freshToken;
+
+        const cloudVault = await downloadFromVault(fileId);
+        if (cloudVault && cloudVault.data) {
+            applyCloudData(cloudVault.data);
+            localStorage.setItem('bb_last_sync', String(Date.now()));
+            toast('📦 Snapshot restored successfully!', 'success');
+            setTimeout(() => location.reload(), 1500);
+            return true;
+        }
+    } catch (e) {
+        console.error('[Sync] Restore failed:', e);
+        toast('Failed to restore snapshot.', 'error');
+        updateSyncUI('CONNECTED');
+    }
+    return false;
+}
 
 // Boot
 document.addEventListener('DOMContentLoaded', initSyncEngine);
+
+window.showCloudSnapshotsModal = async () => {
+    const modal = document.getElementById('modal-cloud-snapshots');
+    if (!modal) return;
+    modal.style.display = 'flex';
+    
+    const listEl = document.getElementById('cloud-snapshots-list');
+    listEl.innerHTML = '<div style="text-align:center; padding:20px" class="muted small">Loading snapshots from Google Drive...</div>';
+    
+    if (!gdriveAccessToken) {
+        listEl.innerHTML = '<div style="text-align:center; padding:20px; color:var(--red)">Not connected to Google Drive. Please enable Cloud Sentinel first.</div>';
+        return;
+    }
+    
+    const snapshots = await listCloudSnapshots();
+    
+    if (snapshots.length === 0) {
+        listEl.innerHTML = '<div style="text-align:center; padding:20px" class="muted small">No cloud snapshots found.</div>';
+        return;
+    }
+    
+    listEl.innerHTML = '';
+    snapshots.forEach(snap => {
+        const date = new Date(snap.createdTime);
+        const dateStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+        
+        const item = document.createElement('div');
+        item.style.display = 'flex';
+        item.style.justifyContent = 'space-between';
+        item.style.alignItems = 'center';
+        item.style.padding = '12px';
+        item.style.background = 'var(--bg-glass)';
+        item.style.border = '1px solid var(--border)';
+        item.style.borderRadius = 'var(--r-sm)';
+        
+        item.innerHTML = `
+            <div>
+                <div style="font-weight:700">Snapshot</div>
+                <div class="muted small">${dateStr}</div>
+            </div>
+            <button class="btn-ghost btn-sm" style="color:var(--acid); border-color:var(--acid)">Restore</button>
+        `;
+        
+        const restoreBtn = item.querySelector('button');
+        restoreBtn.onclick = async () => {
+            if (confirm('Are you sure you want to restore this snapshot? All current local data will be permanently overwritten!')) {
+                restoreBtn.textContent = 'Restoring...';
+                restoreBtn.disabled = true;
+                const success = await restoreSnapshot(snap.id);
+                if (!success) {
+                    restoreBtn.textContent = 'Restore Failed';
+                }
+            }
+        };
+        
+        listEl.appendChild(item);
+    });
+};

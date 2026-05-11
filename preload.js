@@ -9,5 +9,8 @@ contextBridge.exposeInMainWorld('api', {
     openPath: (filePath) => ipcRenderer.invoke('open-path', filePath),
     openExternal: (url) => ipcRenderer.invoke('open-external', url),
     authGDrive: () => ipcRenderer.invoke('auth-gdrive'),
-    refreshGDriveToken: (refreshToken) => ipcRenderer.invoke('refresh-gdrive-token', refreshToken)
+    refreshGDriveToken: (refreshToken) => ipcRenderer.invoke('refresh-gdrive-token', refreshToken),
+    saveOffline: (data) => ipcRenderer.invoke('save-offline', data),
+    confirmClose: () => ipcRenderer.send('confirm-close'),
+    onForceSyncAndClose: (callback) => ipcRenderer.on('force-sync-and-close', callback)
 });
